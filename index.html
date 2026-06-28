@@ -1083,19 +1083,53 @@ ctx.drawImage(img, dX, dY, dW, dH);
         curY = drawPhysPanel(PAD_X, curY, INNER_W, physicalText);
 
         const statW = (INNER_W-10)/2;
-        ctx.fillText(val, px(x+w/2), px(y+42));
-          fillRoundRect(ctx, x, y, w, h, 6, statBg, statBorder, px(1));
-          ctx.font = `700 ${px(9)}px "Noto Sans KR",sans-serif`;
-          ctx.fillStyle = statAccent; ctx.textAlign = "center";
-          ctx.fillText(label, px(x+w/2), px(y+22));
-          ctx.font = `500 ${px(12)}px "Noto Sans KR",sans-serif`;
-          ctx.fillStyle = statText;
-          ctx.fillText(val, px(x+w/2), px(y+42));
-          ctx.textAlign = "left";
+        const statW = (INNER_W - 10) / 2;
+
+function drawStat(label, val, x, y, w, h) {
+
+    fillRoundRect(ctx, x, y, w, h, 6, statBg, statBorder, px(1));
+
+    ctx.textAlign = "center";
+
+    ctx.font = `700 ${px(9)}px "Noto Sans KR",sans-serif`;
+    ctx.fillStyle = statAccent;
+    ctx.fillText(label, px(x + w / 2), px(y + 20));
+
+    ctx.font = `500 ${px(11)}px "Noto Sans KR",sans-serif`;
+    ctx.fillStyle = statText;
+
+    const maxWidth = px(w - 18);
+    const lineHeight = px(14);
+
+    let lines = [];
+    let current = "";
+
+    for (const word of val.split(" ")) {
+        const test = current ? current + " " + word : word;
+
+        if (ctx.measureText(test).width > maxWidth && current) {
+            lines.push(current);
+            current = word;
+        } else {
+            current = test;
         }
-        drawStat("AGE / GEN",  ageText,  PAD_X,           curY, statW, 73);
-        drawStat("RANK / TYPE",rankText, PAD_X+statW+10,  curY, statW, 73);
-        curY += 73+12;
+    }
+
+    if (current) lines.push(current);
+
+    let startY = px(y + 40);
+
+    lines.forEach((line, i) => {
+        ctx.fillText(line, px(x + w / 2), startY + i * lineHeight);
+    });
+
+    ctx.textAlign = "left";
+}
+
+drawStat("AGE / GEN", ageText, PAD_X, curY, statW, 90);
+drawStat("RANK / TYPE", rankText, PAD_X + statW + 10, curY, statW, 90);
+
+curY += 90 + 12;
 
         function drawRelPanel(x, y, w, title, body) {
           const textH = measureTextH(ctx, body, px(w-38), lineH11, bodyFont11);
