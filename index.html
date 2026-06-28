@@ -8,7 +8,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;800&display=swap)" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;800&display=swap" rel="stylesheet">
 
   <style>
     * { box-sizing: border-box; }
@@ -322,7 +322,7 @@
       font-size: 11px;
       line-height: 1.72;
       font-weight: 400;
-      word-break: break-all; /* 공백 없는 긴 문장 강제 줄바꿈 처리 추가 */
+      word-break: break-all; /* 미리보기 영역도 공백없는 문자열 자동 줄바꿈 지원 */
       white-space: pre-line;
     }
 
@@ -476,7 +476,7 @@
       color: var(--card-text-soft);
       font-size: 11px;
       line-height: 1.68;
-      word-break: break-all; /* 공백 없는 긴 문장 강제 줄바꿈 처리 추가 */
+      word-break: break-all; /* FAVOR / HATE 영역도 자동 줄바꿈 처리 */
       white-space: pre-line;
     }
 
@@ -878,13 +878,56 @@
     bindColor("hateColorInput",  ["--hate-accent", "--hate-border"]);
     bindColor("hateBgInput",     ["--hate-bg"]);
 
+    // 공백 없는 긴 문장이나 한글 텍스트 처리를 위해 [글자 단위 줄바꿈] 함수로 전면 리팩토링
+    function measureTextH(ctx, text, maxW, lineH, font) {
+      ctx.font = font;
+      let h = 0;
+      for (const line of text.split("\n")) {
+        if (!line) { h += lineH; continue; }
+        let cur = "";
+        for (let i = 0; i < line.length; i++) {
+          const char = line[i];
+          const test = cur + char;
+          if (ctx.measureText(test).width > maxW && cur) {
+            h += lineH;
+            cur = char;
+          } else {
+            cur = test;
+          }
+        }
+        if (cur) h += lineH;
+      }
+      return h;
+    }
+
+    function drawText(ctx, text, x, y, maxW, lineH, color, font) {
+      ctx.fillStyle = color; ctx.font = font;
+      let cy = y;
+      for (const line of text.split("\n")) {
+        if (!line) { cy += lineH; continue; }
+        let cur = "";
+        for (let i = 0; i < line.length; i++) {
+          const char = line[i];
+          const test = cur + char;
+          if (ctx.measureText(test).width > maxW && cur) {
+            ctx.fillText(cur, x, cy); 
+            cy += lineH; 
+            cur = char;
+          } else {
+            cur = test;
+          }
+        }
+        if (cur) { ctx.fillText(cur, x, cy); cy += lineH; }
+      }
+      return cy;
+    }
+
     document.getElementById("savePngButton").addEventListener("click", async () => {
       const status = document.getElementById("actionStatus");
       try {
         status.textContent = "PNG를 준비 중입니다...";
         await document.fonts.ready;
 
-        const card = document.getElementById("profileCard");
         const SCALE = 2;
         const CARD_W = 318;
         const HERO_H = 424;
@@ -940,17 +983,69 @@
         const favorText     = getValue("favorInput");
         const hateText      = getValue("hateInput");
 
-        const estH = HERO_H + 1200;
+        // 1단계: 임시 오프스크린 캔버스로 정확한 전체 높이(실측치)를 먼저 계산합니다.
+        const tempCanvas = document.createElement("canvas");
+        tempCanvas.width = px(CARD_W); tempCanvas.height = px(5000);
+        const tempCtx = tempCanvas.getContext("2d");
+
+        const bodyFont11 = `400 ${px(11)}px "Noto Sans KR",sans-serif`;
+        const lineH11 = px(11)*1.72;
+        const lineH168 = px(11)*1.68;
+
+        let calcY = HERO_H + 10;
+        calcY += 20; // 상단 문구 영역
+        calcY += 32; // 코드네임 영역
+        calcY += tagText ? 32 : 10; // 태그 영역
+
+        // PHYSICAL HEIGHT
+        const physTextH = measureTextH(tempCtx, physicalText, px(INNER_W-24), lineH11, bodyFont11);
+        const physPH = 12+10+8+8+(physTextH/SCALE)+13;
+        calcY += physPH + 12;
+
+        // STATS HEIGHT
+        calcY += 73 + 12;
+
+        // RELATION HEIGHT
+        const relTextH = measureTextH(tempCtx, relBodyText, px(INNER_W-32), lineH11, bodyFont11);
+        const relPH = 14+14+12+(relTextH/SCALE)+14;
+        calcY += relPH + 14;
+
+        // SKILL HEIGHT
+        if (skillTitleText) calcY += 26;
+        if (skillBodyText) {
+          const skillTextH = measureTextH(tempCtx, skillBodyText, px(INNER_W), lineH11, bodyFont11);
+          calcY += (skillTextH/SCALE) + 12;
+        }
+
+        // HISTORY HEIGHT
+        if (histTitleText) calcY += 26;
+        const histTextH = measureTextH(tempCtx, histBodyText, px(INNER_W-24), lineH11, bodyFont11);
+        const histPH = 12+(histTextH/SCALE)+13;
+        calcY += histPH + 12;
+
+        // FAVOR / HATE HEIGHT (두 박스 중 더 높게 확장된 높이를 채택)
+        const favorTextH = measureTextH(tempCtx, favorText, px((INNER_W-10)/2-22), lineH168, bodyFont11);
+        const favorPH = Math.max(82, 11+10+10+(favorTextH/SCALE)+12);
+        
+        const hateTextH = measureTextH(tempCtx, hateText, px((INNER_W-10)/2-22), lineH168, bodyFont11);
+        const hatePH = Math.max(82, 11+10+10+(hateTextH/SCALE)+12);
+        
+        calcY += Math.max(favorPH, hatePH) + 10;
+        calcY += 30; // 카피라이트 패딩 영역 포함 최종 높이 산출
+
+        // 2단계: 실측된 정확한 높이로 실제 캔버스 생성
         const W = px(CARD_W);
-        const H = px(estH);
+        const H = px(calcY);
 
         const canvas = document.createElement("canvas");
         canvas.width = W; canvas.height = H;
         const ctx = canvas.getContext("2d");
 
+        // 배경 칠하기
         ctx.fillStyle = cardBg;
         ctx.fillRect(0, 0, W, H);
 
+        // 상단 히어로 이미지 렌더링
         if (uploadedImageDataUrl) {
           await new Promise((resolve) => {
             const img = new Image();
@@ -960,12 +1055,9 @@
               const scale = Math.max(targetW / imgW, targetH / imgH);
               const dW = imgW * scale;
               const dH = imgH * scale;
-
               const dX = (targetW - dW) / 2;
               const dY = (targetH - dH) / 2;
-
               ctx.drawImage(img, dX, dY, dW, dH);
-            
               resolve();
             };
             img.onerror = resolve;
@@ -1004,51 +1096,6 @@
           if (stroke) { ctx.strokeStyle=stroke; ctx.lineWidth=lw||px(1); ctx.stroke(); }
         }
 
-        // 공백이 없어도 글자 단위로 나누어 캔버스 폭에 맞춰 정확한 높이를 구하도록 함수 전면 수정
-        function measureTextH(ctx, text, maxW, lineH, font) {
-          ctx.font = font;
-          let h = 0;
-          for (const line of text.split("\n")) {
-            if (!line) { h += lineH; continue; }
-            let cur = "";
-            for (let i = 0; i < line.length; i++) {
-              const char = line[i];
-              const test = cur + char;
-              if (ctx.measureText(test).width > maxW && cur) {
-                h += lineH;
-                cur = char;
-              } else {
-                cur = test;
-              }
-            }
-            if (cur) h += lineH;
-          }
-          return h;
-        }
-
-        // 공백 여부 무관하게 가로 한계를 넘으면 글자 단위로 끊어 캔버스에 줄바꿈 출력하도록 수정
-        function drawText(ctx, text, x, y, maxW, lineH, color, font) {
-          ctx.fillStyle = color; ctx.font = font;
-          let cy = y;
-          for (const line of text.split("\n")) {
-            if (!line) { cy += lineH; continue; }
-            let cur = "";
-            for (let i = 0; i < line.length; i++) {
-              const char = line[i];
-              const test = cur + char;
-              if (ctx.measureText(test).width > maxW && cur) {
-                ctx.fillText(cur, x, cy); 
-                cy += lineH; 
-                cur = char;
-              } else {
-                cur = test;
-              }
-            }
-            if (cur) { ctx.fillText(cur, x, cy); cy += lineH; }
-          }
-          return cy;
-        }
-
         ctx.textAlign = "left";
         let curY = HERO_H + 10;
 
@@ -1079,9 +1126,6 @@
         } else { curY += 10; }
 
         ctx.textAlign = "left";
-
-        const bodyFont11 = `400 ${px(11)}px "Noto Sans KR",sans-serif`;
-        const lineH11 = px(11)*1.72;
 
         function drawPhysPanel(x, y, w, body) {
           const textH = measureTextH(ctx, body, px(w-24), lineH11, bodyFont11);
@@ -1114,7 +1158,7 @@
         curY += 73+12;
 
         function drawRelPanel(x, y, w, title, body) {
-          const textH = measureTextH(ctx, body, px(w-38), lineH11, bodyFont11);
+          const textH = measureTextH(ctx, body, px(w-32), lineH11, bodyFont11);
           const pH = 14+14+12+(textH/SCALE)+14;
           const rx=px(x), ry=px(y), rw=px(w), rh=px(pH), r=px(4);
           ctx.beginPath();
@@ -1166,36 +1210,29 @@
         curY = drawHistPanel(PAD_X, curY, INNER_W, histBodyText);
 
         const miniW = (INNER_W-10)/2;
-        const lineH168 = px(11)*1.68;
-        function drawMini(label, text, ac, bc, bg, x, y, w) {
-          const textH = measureTextH(ctx, text, px(w-22), lineH168, bodyFont11);
-          const pH = Math.max(82, 11+10+10+textH/SCALE+12);
-          fillRoundRect(ctx, x, y, w, pH, 6, bg, bc, px(1));
+        function drawMini(label, text, ac, bc, bg, x, y, w, forcedH) {
+          fillRoundRect(ctx, x, y, w, forcedH, 6, bg, bc, px(1));
           ctx.font = `800 ${px(10)}px "Noto Sans KR",sans-serif`;
           ctx.fillStyle = ac;
           ctx.fillText(label, px(x+11), px(y+21));
           drawText(ctx, text, px(x+11), px(y+34), px(w-22), lineH168, textSoft, bodyFont11);
-          return y+pH+10;
         }
 
-        const miniEndY = Math.max(
-          drawMini("FAVOR", favorText, favorAccent, favorBorder, favorBg, PAD_X,         curY, miniW),
-          drawMini("HATE",  hateText,  hateAccent,  hateBorder,  hateBg,  PAD_X+miniW+10, curY, miniW)
-        );
-        curY = miniEndY;
+        // 양쪽 박스의 밸런스를 맞추기 위해 실측 결과값 중 최댓값을 적용해 나란히 배치합니다.
+        const finalMiniH = Math.max(favorPH, hatePH);
+        drawMini("FAVOR", favorText, favorAccent, favorBorder, favorBg, PAD_X,         curY, miniW, finalMiniH);
+        drawMini("HATE",  hateText,  hateAccent,  hateBorder,  hateBg,  PAD_X+miniW+10, curY, miniW, finalMiniH);
+        curY += finalMiniH + 10;
 
+        // 푸터 카피라이터 영역
         ctx.fillStyle = cardBg;
         ctx.fillRect(0, px(curY), px(CARD_W), px(30));
         ctx.font = `700 ${px(9)}px "Noto Sans KR",sans-serif`;
         ctx.fillStyle = secretAccent; ctx.textAlign = "center";
         ctx.fillText("© PRISM FOUNDATION", px(CARD_W/2), px(curY+17));
 
-        const finalH = px(curY+30);
-        const out = document.createElement("canvas");
-        out.width = W; out.height = finalH;
-        out.getContext("2d").drawImage(canvas, 0, 0);
-
-        const dataUrl = out.toDataURL("image/png");
+        // 다운로드 실행
+        const dataUrl = canvas.toDataURL("image/png");
         const link = document.createElement("a");
         link.href = dataUrl;
         link.download = "prism-profile-card.png";
