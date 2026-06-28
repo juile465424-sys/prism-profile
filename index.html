@@ -10,12 +10,15 @@
   <link href="[fonts.googleapis.com](https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;800&display=swap)" rel="stylesheet">
 
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     :root {
       --bg-main: #070707;
       --bg-grad-top: rgba(120,20,20,0.15);
       --bg-grad-bottom: #050505;
+
       --editor-bg: #120405;
       --editor-border: #321010;
       --editor-section-bg: #180607;
@@ -27,46 +30,55 @@
       --editor-soft: #caa8a8;
       --editor-white: #fff7f7;
       --editor-accent: #ff2d2d;
+
       --card-bg: #120304;
       --card-border: #2e0909;
       --card-top-border: #7e1717;
+
       --card-text-white: #fff7f7;
       --card-text-body: #f0dddd;
       --card-text-soft: #efdddd;
       --card-stat-text: #fff5f5;
+
       --secret-accent: #ff2d2d;
       --tag-accent: #ff2d2d;
       --tag-border: #a31717;
+
       --physical-accent: #ff2d2d;
       --physical-border: #4a1212;
       --physical-bg: #180607;
-      --physical-line: #ff2d2d;
+
       --relation-accent: #ff2d2d;
       --relation-border: #4a1212;
       --relation-bg: #180607;
+      --relation-left-line: #ff2d2d;
+
       --skill-accent: #ff2d2d;
       --skill-border: #4a1212;
-      --skill-line-left: #df2020;
-      --skill-line-right: #df2020;
+      --skill-line: #df2020;
       --skill-bg: #180607;
+
       --history-accent: #ff2d2d;
       --history-border: #4a1212;
-      --history-line-left: #df2020;
-      --history-line-right: #df2020;
+      --history-line: #df2020;
       --history-bg: #180607;
+
       --stat-accent: #ff2d2d;
       --stat-border: #931818;
       --stat-bg: #180607;
+
       --favor-accent: #ff2d2d;
       --favor-border: #4a1212;
       --favor-bg: #180607;
+
       --hate-accent: #ff2d2d;
       --hate-border: #4a1212;
       --hate-bg: #180607;
     }
 
     html, body {
-      margin: 0; padding: 0;
+      margin: 0;
+      padding: 0;
       background: var(--bg-main);
       color: var(--editor-text);
       font-family: "Noto Sans KR", sans-serif;
@@ -80,27 +92,37 @@
     }
 
     .site-header {
-      border-bottom: 1px solid rgba(255,60,60,0.15);
-      background: rgba(10,10,10,0.92);
+      border-bottom: 1px solid rgba(255, 60, 60, 0.15);
+      background: rgba(10, 10, 10, 0.92);
       backdrop-filter: blur(6px);
     }
 
     .site-header-inner {
-      max-width: 1480px; margin: 0 auto; padding: 18px 20px;
+      max-width: 1480px;
+      margin: 0 auto;
+      padding: 18px 20px;
     }
 
     .site-title {
-      margin: 0; font-size: 22px; font-weight: 800;
-      letter-spacing: 1px; color: var(--editor-white);
+      margin: 0;
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: var(--editor-white);
     }
 
-    .site-sub { margin-top: 6px; font-size: 13px; color: var(--editor-soft); }
+    .site-sub {
+      margin-top: 6px;
+      font-size: 13px;
+      color: var(--editor-soft);
+    }
 
     .layout {
-      max-width: 1480px; margin: 0 auto;
+      max-width: 1480px;
+      margin: 0 auto;
       padding: 24px 20px 40px;
       display: grid;
-      grid-template-columns: 480px minmax(340px, 1fr);
+      grid-template-columns: 460px minmax(340px, 1fr);
       gap: 24px;
       align-items: start;
     }
@@ -110,22 +132,27 @@
       border: 1px solid var(--editor-border);
       border-radius: 14px;
       padding: 18px;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
       position: sticky;
       top: 20px;
-      max-height: calc(100vh - 40px);
-      overflow-y: auto;
     }
 
-    .editor h2 { margin: 0 0 8px; font-size: 20px; color: var(--editor-white); }
+    .editor h2 {
+      margin: 0 0 8px;
+      font-size: 20px;
+      color: var(--editor-white);
+    }
 
     .editor-desc {
-      margin: 0 0 18px; font-size: 13px;
-      line-height: 1.6; color: var(--editor-soft);
+      margin: 0 0 18px;
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--editor-soft);
     }
 
     .form-section {
-      margin-bottom: 18px; padding: 14px;
+      margin-bottom: 18px;
+      padding: 14px;
       border: 1px solid var(--editor-section-border);
       border-radius: 10px;
       background: var(--editor-section-bg);
@@ -134,16 +161,25 @@
     .form-section-title {
       margin: 0 0 12px;
       color: var(--editor-accent);
-      font-size: 12px; font-weight: 800; letter-spacing: 1px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1px;
     }
 
-    .field { margin-bottom: 12px; }
-    .field:last-child { margin-bottom: 0; }
-    .inline-color { margin-top: 8px; }
+    .field {
+      margin-bottom: 12px;
+    }
+
+    .field:last-child {
+      margin-bottom: 0;
+    }
 
     label {
-      display: block; margin-bottom: 6px;
-      font-size: 12px; font-weight: 700; color: var(--editor-label);
+      display: block;
+      margin-bottom: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--editor-label);
     }
 
     input[type="text"],
@@ -160,40 +196,61 @@
       font-size: 13px;
     }
 
-    input[type="color"] { padding: 6px; height: 44px; cursor: pointer; }
-    textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
-    input[type="file"] { padding: 8px; }
+    input[type="color"] {
+      padding: 6px;
+      height: 44px;
+      cursor: pointer;
+    }
 
-    .color-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+      line-height: 1.6;
+    }
+
+    input[type="file"] {
+      padding: 8px;
+    }
+
+    .inline-color {
       margin-top: 8px;
     }
 
-    .color-row .color-cell label { font-size: 11px; }
-
-    .action-row { display: grid; gap: 10px; margin-bottom: 18px; }
+    .action-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
 
     .action-button {
       width: 100%;
       border: 1px solid var(--editor-input-border);
-      background: linear-gradient(to bottom, rgba(255,45,45,0.16), rgba(255,45,45,0.08));
+      background: linear-gradient(to bottom, rgba(255, 45, 45, 0.16), rgba(255, 45, 45, 0.08));
       color: #fff5f5;
       border-radius: 10px;
       padding: 12px 14px;
       font-family: inherit;
-      font-size: 13px; font-weight: 700;
+      font-size: 13px;
+      font-weight: 700;
       cursor: pointer;
       transition: 0.2s ease;
     }
 
-    .action-button:hover { filter: brightness(1.08); }
-    .action-button:active { transform: translateY(1px); }
+    .action-button:hover {
+      filter: brightness(1.08);
+    }
+
+    .action-button:active {
+      transform: translateY(1px);
+    }
 
     .action-status {
-      margin-top: 10px; font-size: 12px;
-      color: var(--editor-soft); min-height: 18px;
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--editor-soft);
+      min-height: 18px;
+      line-height: 1.6;
     }
 
     .preview-area {
@@ -203,7 +260,11 @@
       padding: 0;
     }
 
-    .wrap { width: 100%; display: flex; justify-content: center; }
+    .wrap {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
 
     .card {
       width: 318px;
@@ -213,212 +274,281 @@
       border-radius: 10px;
       overflow: hidden;
       box-shadow:
-        0 0 0 1px rgba(255,40,40,0.03),
-        0 0 30px rgba(0,0,0,0.45);
+        0 0 0 1px rgba(255, 40, 40, 0.03),
+        0 0 30px rgba(0, 0, 0, 0.45);
     }
 
     .hero {
       position: relative;
-      width: 100%; height: 252px;
+      width: 100%;
+      height: 252px;
       background:
-        linear-gradient(to bottom,
-          rgba(0,0,0,0.00) 0%,
-          rgba(0,0,0,0.08) 55%,
-          rgba(16,3,4,0.72) 86%,
-          rgba(16,3,4,0.98) 100%
+        linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0.00) 0%,
+          rgba(0, 0, 0, 0.08) 55%,
+          rgba(16, 3, 4, 0.72) 86%,
+          rgba(16, 3, 4, 0.98) 100%
         ),
-        url("data:image/svg+xml;utf8,<svg xmlns='[w3.org](http://www.w3.org/2000/svg)' width='318' height='252' viewBox='0 0 318 252'><rect width='318' height='252' fill='%23111111'/><text x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23888888' font-size='24' font-family='Arial'>IMAGE</text></svg>")
-        center top / cover no-repeat;
+        url("data:image/svg+xml;utf8,<svg xmlns='[w3.org](http://www.w3.org/2000/svg)' width='318' height='252' viewBox='0 0 318 252'><rect width='318' height='252' fill='%23111111'/><text x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23888888' font-size='24' font-family='Arial'>IMAGE</text></svg>") center top / cover no-repeat;
     }
 
-    .content { background: var(--card-bg); padding: 10px 14px 14px; }
+    .content {
+      background: var(--card-bg);
+      padding: 10px 14px 14px;
+    }
 
     .secret {
-      text-align: center; color: var(--secret-accent);
-      font-size: 10px; line-height: 1; letter-spacing: 2.6px;
-      font-weight: 800; margin: 2px 0 10px;
+      text-align: center;
+      color: var(--secret-accent);
+      font-size: 10px;
+      line-height: 1;
+      letter-spacing: 2.6px;
+      font-weight: 800;
+      margin: 2px 0 10px;
     }
 
     .codename {
-      margin: 0; text-align: center;
+      margin: 0;
+      text-align: center;
       color: var(--card-text-white);
-      font-size: 24px; line-height: 1.05;
-      letter-spacing: 1.1px; font-weight: 300;
+      font-size: 24px;
+      line-height: 1.05;
+      letter-spacing: 1.1px;
+      font-weight: 300;
       text-shadow:
         0 0 4px rgba(255,255,255,0.2),
-        0 0 10px rgba(255,60,60,0.35),
-        0 0 18px rgba(255,60,60,0.22);
+        0 0 10px rgba(255, 60, 60, 0.35),
+        0 0 18px rgba(255, 60, 60, 0.22);
     }
 
     .tag {
-      display: table; margin: 11px auto 17px;
+      display: table;
+      margin: 11px auto 17px;
       padding: 6px 10px 5px;
       color: var(--tag-accent);
       border: 1px solid var(--tag-border);
       border-radius: 2px;
-      font-size: 10px; line-height: 1; letter-spacing: 1.1px;
-      background: rgba(255,0,0,0.02);
+      font-size: 10px;
+      line-height: 1;
+      letter-spacing: 1.1px;
+      background: rgba(255, 0, 0, 0.02);
     }
 
     .panel {
-      border-radius: 6px; padding: 12px 12px 13px;
+      border-radius: 6px;
+      padding: 12px 12px 13px;
       margin-bottom: 12px;
-      box-shadow: inset 0 0 0 1px rgba(255,30,30,0.015);
+      box-shadow: inset 0 0 0 1px rgba(255, 30, 30, 0.015);
     }
 
     .panel-title {
-      font-size: 10px; line-height: 1;
-      letter-spacing: 1.5px; font-weight: 800; margin-bottom: 10px;
+      font-size: 10px;
+      line-height: 1;
+      letter-spacing: 1.5px;
+      font-weight: 800;
+      margin-bottom: 10px;
     }
 
     .panel p {
       margin: 0;
       color: var(--card-text-body);
-      font-size: 11px; line-height: 1.72; font-weight: 400;
-      word-break: keep-all; white-space: pre-line;
+      font-size: 11px;
+      line-height: 1.72;
+      font-weight: 400;
+      word-break: keep-all;
+      white-space: pre-line;
     }
 
     .panel-physical {
       background: var(--physical-bg);
       border: 1px solid var(--physical-border);
+      border-radius: 6px;
     }
 
     .panel-physical .panel-title {
-      color: var(--card-text-white);
-      display: inline-block;
-      margin-bottom: 8px;
-      padding: 0 0 6px 0;
-      border-bottom: 1px solid var(--physical-line);
+      color: var(--physical-accent);
     }
 
     .panel-relation {
-      position: relative;
       background: var(--relation-bg);
       border: 1px solid var(--relation-border);
-      border-left: 4px solid var(--relation-accent);
-      border-radius: 0 12px 12px 0;
-      padding: 14px 16px 14px 22px;
+      border-left: 5px solid var(--relation-left-line);
+      border-radius: 2px;
+      padding: 16px 14px 16px 16px;
+      box-shadow: none;
     }
 
     .panel-relation .panel-title {
-      color: var(--card-text-white);
-      font-size: 14px;
+      color: var(--relation-accent);
+      font-size: 11px;
       line-height: 1.4;
-      letter-spacing: 0;
-      font-weight: 800;
+      letter-spacing: 0.2px;
       margin-bottom: 12px;
     }
 
+    .panel-relation p {
+      line-height: 1.95;
+      font-size: 11px;
+    }
+
     .panel-skill {
-      background: transparent;
-      border: none;
-      padding: 0;
-      margin-bottom: 12px;
-      box-shadow: none;
+      background: var(--skill-bg);
+      border: 1px solid var(--skill-border);
+      border-radius: 6px;
     }
 
     .panel-history {
       background: var(--history-bg);
       border: 1px solid var(--history-border);
+      border-radius: 6px;
     }
 
     .stat-grid {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 10px; margin-bottom: 12px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 12px;
     }
 
     .stat {
       background: var(--stat-bg);
       border: 1px solid var(--stat-border);
-      border-radius: 6px; min-height: 73px;
-      text-align: center; padding: 11px 8px 10px;
-      display: flex; flex-direction: column; justify-content: center;
+      border-radius: 6px;
+      min-height: 73px;
+      text-align: center;
+      padding: 11px 8px 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
     .stat-label {
-      color: var(--stat-accent); font-size: 9px; line-height: 1;
-      letter-spacing: 1px; font-weight: 700; margin-bottom: 10px;
+      color: var(--stat-accent);
+      font-size: 9px;
+      line-height: 1;
+      letter-spacing: 1px;
+      font-weight: 700;
+      margin-bottom: 10px;
     }
 
-    .stat-value { color: var(--card-stat-text); font-size: 12px; line-height: 1.25; font-weight: 500; }
+    .stat-value {
+      color: var(--card-stat-text);
+      font-size: 12px;
+      line-height: 1.25;
+      font-weight: 500;
+    }
 
     .section-head {
       margin: 14px 0 10px;
-      font-size: 11px; line-height: 1.4; font-weight: 700;
-      display: flex;
-      align-items: center;
+      padding-top: 8px;
+      font-size: 11px;
+      line-height: 1.4;
+      font-weight: 700;
+    }
+
+    .section-head-skill {
+      border-top: 1px solid var(--skill-line);
+      color: var(--skill-accent);
+    }
+
+    .section-head-history {
+      border-top: 1px solid var(--history-line);
+      color: var(--history-accent);
+    }
+
+    .bottom-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       gap: 10px;
-      color: var(--card-text-white);
+      margin-top: 2px;
     }
 
-    .section-head::before,
-    .section-head::after {
-      content: "";
-      display: block;
-      height: 1px;
-      flex-shrink: 0;
+    .mini {
+      border-radius: 6px;
+      padding: 11px 11px 12px;
+      min-height: 82px;
     }
-
-    .section-head-skill::before {
-      width: 28px;
-      background: var(--skill-line-left);
-    }
-
-    .section-head-skill::after {
-      flex: 1;
-      background: var(--skill-line-right);
-    }
-
-    .section-head-history::before {
-      width: 28px;
-      background: var(--history-line-left);
-    }
-
-    .section-head-history::after {
-      flex: 1;
-      background: var(--history-line-right);
-    }
-
-    .bottom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 2px; }
-
-    .mini { border-radius: 6px; padding: 11px 11px 12px; min-height: 82px; }
 
     .mini-title {
-      font-size: 10px; line-height: 1; letter-spacing: 1px;
-      font-weight: 800; margin-bottom: 10px;
+      font-size: 10px;
+      line-height: 1;
+      letter-spacing: 1px;
+      font-weight: 800;
+      margin-bottom: 10px;
     }
 
     .mini p {
-      margin: 0; color: var(--card-text-soft);
-      font-size: 11px; line-height: 1.68;
-      word-break: keep-all; white-space: pre-line;
+      margin: 0;
+      color: var(--card-text-soft);
+      font-size: 11px;
+      line-height: 1.68;
+      word-break: keep-all;
+      white-space: pre-line;
     }
 
-    .mini-favor { background: var(--favor-bg); border: 1px solid var(--favor-border); }
-    .mini-favor .mini-title { color: var(--favor-accent); }
+    .mini-favor {
+      background: var(--favor-bg);
+      border: 1px solid var(--favor-border);
+    }
 
-    .mini-hate { background: var(--hate-bg); border: 1px solid var(--hate-border); }
-    .mini-hate .mini-title { color: var(--hate-accent); }
+    .mini-favor .mini-title {
+      color: var(--favor-accent);
+    }
+
+    .mini-hate {
+      background: var(--hate-bg);
+      border: 1px solid var(--hate-border);
+    }
+
+    .mini-hate .mini-title {
+      color: var(--hate-accent);
+    }
 
     .copyright {
-      text-align: center; color: var(--secret-accent);
-      font-size: 9px; line-height: 1; letter-spacing: 2.2px;
-      font-weight: 700; padding: 14px 0 16px;
+      text-align: center;
+      color: var(--secret-accent);
+      font-size: 9px;
+      line-height: 1;
+      letter-spacing: 2.2px;
+      font-weight: 700;
+      padding: 14px 0 16px;
       background: var(--card-bg);
     }
 
-    .helper { margin-top: 14px; font-size: 12px; color: #b99595; line-height: 1.7; }
+    .helper {
+      margin-top: 14px;
+      font-size: 12px;
+      color: #b99595;
+      line-height: 1.7;
+    }
 
     @media (max-width: 1100px) {
-      .layout { grid-template-columns: 1fr; }
-      .editor { position: static; max-height: none; }
-      .preview-area { justify-content: center; }
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .editor {
+        position: static;
+      }
+
+      .preview-area {
+        justify-content: center;
+      }
     }
 
     @media (max-width: 520px) {
-      .layout { padding: 16px 12px 28px; }
-      .site-header-inner { padding: 16px 12px; }
-      .editor { padding: 14px; }
+      .layout {
+        padding: 16px 12px 28px;
+      }
+
+      .site-header-inner {
+        padding: 16px 12px;
+      }
+
+      .editor {
+        padding: 14px;
+      }
     }
   </style>
 </head>
@@ -433,12 +563,9 @@
   <main class="layout">
     <section class="editor">
       <h2>프로필 편집기</h2>
-      <p class="editor-desc">코드네임, 각 박스 내용, 각 박스별 색상(테두리·배경 포함)을 개별적으로 설정할 수 있습니다.</p>
-
-      <div class="action-row">
-        <button type="button" class="action-button" id="savePngButton">PNG 저장</button>
-        <div class="action-status" id="actionStatus"></div>
-      </div>
+      <p class="editor-desc">
+        관계 박스는 왼쪽 강조선이 있는 형태로 바뀌었고, 그 선 색상도 따로 지정할 수 있습니다.
+      </p>
 
       <div class="form-section">
         <h3 class="form-section-title">전체 카드 색상</h3>
@@ -473,8 +600,8 @@
         </div>
 
         <div class="field">
-          <label for="secretTextInput">상단 비밀 문구</label>
-          <input type="text" id="secretTextInput" value="PRISM TOP SECRET ASSET" />
+          <label>상단 문구</label>
+          <input type="text" value="PRISM TOP SECRET ASSET" disabled />
         </div>
 
         <div class="field">
@@ -494,15 +621,9 @@
         <div class="field">
           <label for="physicalInput">PHYSICAL DESCRIPTION</label>
           <textarea id="physicalInput"></textarea>
-          <div class="color-row">
-            <div class="color-cell">
-              <label for="physicalColorInput">텍스트·테두리·선 색상</label>
-              <input type="color" id="physicalColorInput" value="#ff2d2d" />
-            </div>
-            <div class="color-cell">
-              <label for="physicalBgInput">배경 색상</label>
-              <input type="color" id="physicalBgInput" value="#180607" />
-            </div>
+          <div class="inline-color">
+            <label for="physicalColorInput">외형 박스 색상</label>
+            <input type="color" id="physicalColorInput" value="#ff2d2d" />
           </div>
         </div>
 
@@ -514,15 +635,9 @@
         <div class="field">
           <label for="rankInput">RANK / TYPE</label>
           <input type="text" id="rankInput" value="" />
-          <div class="color-row">
-            <div class="color-cell">
-              <label for="statColorInput">텍스트·테두리 색상</label>
-              <input type="color" id="statColorInput" value="#ff2d2d" />
-            </div>
-            <div class="color-cell">
-              <label for="statBgInput">배경 색상</label>
-              <input type="color" id="statBgInput" value="#180607" />
-            </div>
+          <div class="inline-color">
+            <label for="statColorInput">스탯 박스 색상</label>
+            <input type="color" id="statColorInput" value="#ff2d2d" />
           </div>
         </div>
       </div>
@@ -538,65 +653,41 @@
         <div class="field">
           <label for="relationBodyInput">관계 섹션 본문</label>
           <textarea id="relationBodyInput"></textarea>
-          <div class="color-row">
-            <div class="color-cell">
-              <label for="relationColorInput">왼쪽 강조선·테두리 색상</label>
-              <input type="color" id="relationColorInput" value="#ff2d2d" />
-            </div>
-            <div class="color-cell">
-              <label for="relationBgInput">배경 색상</label>
-              <input type="color" id="relationBgInput" value="#180607" />
-            </div>
+          <div class="inline-color">
+            <label for="relationColorInput">관계 박스 색상</label>
+            <input type="color" id="relationColorInput" value="#ff2d2d" />
+          </div>
+          <div class="inline-color">
+            <label for="relationLineColorInput">관계 박스 왼쪽 선 색상</label>
+            <input type="color" id="relationLineColorInput" value="#ff2d2d" />
           </div>
         </div>
 
         <div class="field">
           <label for="skillTitleInput">능력 섹션 제목</label>
           <input type="text" id="skillTitleInput" value="" />
-          <div class="color-row">
-            <div class="color-cell">
-              <label for="skillLeftLineColorInput">왼쪽 짧은 선 색상</label>
-              <input type="color" id="skillLeftLineColorInput" value="#df2020" />
-            </div>
-            <div class="color-cell">
-              <label for="skillRightLineColorInput">오른쪽 긴 선 색상</label>
-              <input type="color" id="skillRightLineColorInput" value="#df2020" />
-            </div>
-          </div>
         </div>
 
         <div class="field">
           <label for="skillBodyInput">능력 섹션 본문</label>
           <textarea id="skillBodyInput"></textarea>
+          <div class="inline-color">
+            <label for="skillColorInput">능력 박스 색상</label>
+            <input type="color" id="skillColorInput" value="#ff2d2d" />
+          </div>
         </div>
 
         <div class="field">
           <label for="historyTitleInput">서사 섹션 제목</label>
           <input type="text" id="historyTitleInput" value="" />
-          <div class="color-row">
-            <div class="color-cell">
-              <label for="historyLeftLineColorInput">왼쪽 짧은 선 색상</label>
-              <input type="color" id="historyLeftLineColorInput" value="#df2020" />
-            </div>
-            <div class="color-cell">
-              <label for="historyRightLineColorInput">오른쪽 긴 선 색상</label>
-              <input type="color" id="historyRightLineColorInput" value="#df2020" />
-            </div>
-          </div>
         </div>
 
         <div class="field">
           <label for="historyBodyInput">서사 본문</label>
           <textarea id="historyBodyInput"></textarea>
-          <div class="color-row">
-            <div class="color-cell">
-              <label for="historyColorInput">본문 박스 테두리 색상</label>
-              <input type="color" id="historyColorInput" value="#ff2d2d" />
-            </div>
-            <div class="color-cell">
-              <label for="historyBgInput">본문 박스 배경 색상</label>
-              <input type="color" id="historyBgInput" value="#180607" />
-            </div>
+          <div class="inline-color">
+            <label for="historyColorInput">서사 박스 색상</label>
+            <input type="color" id="historyColorInput" value="#ff2d2d" />
           </div>
         </div>
       </div>
@@ -607,36 +698,24 @@
         <div class="field">
           <label for="favorInput">FAVOR</label>
           <textarea id="favorInput"></textarea>
-          <div class="color-row">
-            <div class="color-cell">
-              <label for="favorColorInput">텍스트·테두리 색상</label>
-              <input type="color" id="favorColorInput" value="#ff2d2d" />
-            </div>
-            <div class="color-cell">
-              <label for="favorBgInput">배경 색상</label>
-              <input type="color" id="favorBgInput" value="#180607" />
-            </div>
+          <div class="inline-color">
+            <label for="favorColorInput">FAVOR 박스 색상</label>
+            <input type="color" id="favorColorInput" value="#ff2d2d" />
           </div>
         </div>
 
         <div class="field">
           <label for="hateInput">HATE</label>
           <textarea id="hateInput"></textarea>
-          <div class="color-row">
-            <div class="color-cell">
-              <label for="hateColorInput">텍스트·테두리 색상</label>
-              <input type="color" id="hateColorInput" value="#ff2d2d" />
-            </div>
-            <div class="color-cell">
-              <label for="hateBgInput">배경 색상</label>
-              <input type="color" id="hateBgInput" value="#180607" />
-            </div>
+          <div class="inline-color">
+            <label for="hateColorInput">HATE 박스 색상</label>
+            <input type="color" id="hateColorInput" value="#ff2d2d" />
           </div>
         </div>
       </div>
 
       <p class="helper">
-        PNG 저장은 카드를 그대로 캡처합니다. 이미지를 업로드한 경우 로컬 파일이므로 CORS 문제 없이 저장됩니다.
+        PNG 저장 기능은 제외한 상태의 레이아웃 수정본입니다. 관계 박스 스타일 조정에 집중한 버전입니다.
       </p>
     </section>
 
@@ -645,71 +724,79 @@
         <div class="card" id="profileCard">
           <div class="hero" id="previewHero"></div>
 
-          <div class="content" id="previewContent">
-            <div class="secret" id="previewSecret">PRISM TOP SECRET ASSET</div>
+          <div class="content">
+            <div class="secret">PRISM TOP SECRET ASSET</div>
+
             <h1 class="codename" id="previewCodename"></h1>
+
             <div class="tag" id="previewTag"></div>
 
-            <section class="panel panel-physical" id="panelPhysical">
+            <section class="panel panel-physical">
               <div class="panel-title">PHYSICAL DESCRIPTION</div>
               <p id="previewPhysical"></p>
             </section>
 
             <div class="stat-grid">
-              <div class="stat" id="statAge">
+              <div class="stat">
                 <div class="stat-label">AGE / GEN</div>
                 <div class="stat-value" id="previewAge"></div>
               </div>
-              <div class="stat" id="statRank">
+
+              <div class="stat">
                 <div class="stat-label">RANK / TYPE</div>
                 <div class="stat-value" id="previewRank"></div>
               </div>
             </div>
 
-            <section class="panel panel-relation" id="panelRelation">
+            <section class="panel panel-relation">
               <div class="panel-title" id="previewRelationTitle"></div>
               <p id="previewRelationBody"></p>
             </section>
 
             <div class="section-head section-head-skill" id="previewSkillTitle"></div>
-            <section class="panel panel-skill" id="panelSkill">
+
+            <section class="panel panel-skill">
               <p id="previewSkillBody"></p>
             </section>
 
             <div class="section-head section-head-history" id="previewHistoryTitle"></div>
-            <section class="panel panel-history" id="panelHistory">
+
+            <section class="panel panel-history">
               <p id="previewHistoryBody"></p>
             </section>
 
             <div class="bottom-grid">
-              <section class="mini mini-favor" id="panelFavor">
+              <section class="mini mini-favor">
                 <div class="mini-title">FAVOR</div>
                 <p id="previewFavor"></p>
               </section>
-              <section class="mini mini-hate" id="panelHate">
+
+              <section class="mini mini-hate">
                 <div class="mini-title">HATE</div>
                 <p id="previewHate"></p>
               </section>
             </div>
           </div>
 
-          <div class="copyright" id="previewCopyright">© PRISM FOUNDATION</div>
+          <div class="copyright">© PRISM FOUNDATION</div>
         </div>
       </div>
     </section>
   </main>
 
   <script>
-    function bindText(inputId, previewId) {
+    const bindText = (inputId, previewId) => {
       const input = document.getElementById(inputId);
       const preview = document.getElementById(previewId);
-      if (!input || !preview) return;
-      const update = () => { preview.textContent = input.value; };
+
+      const update = () => {
+        preview.textContent = input.value;
+      };
+
       input.addEventListener("input", update);
       update();
-    }
+    };
 
-    bindText("secretTextInput", "previewSecret");
     bindText("codenameInput", "previewCodename");
     bindText("tagInput", "previewTag");
     bindText("physicalInput", "previewPhysical");
@@ -724,537 +811,45 @@
     bindText("favorInput", "previewFavor");
     bindText("hateInput", "previewHate");
 
-    let uploadedImageDataUrl = null;
+    const imageInput = document.getElementById("imageInput");
+    const previewHero = document.getElementById("previewHero");
 
-    document.getElementById("imageInput").addEventListener("change", function () {
+    imageInput.addEventListener("change", function () {
       const file = this.files && this.files[0];
       if (!file) return;
+
       const reader = new FileReader();
-      reader.onload = (e) => {
-        uploadedImageDataUrl = e.target.result;
-        document.getElementById("previewHero").style.background =
-          'linear-gradient(to bottom,rgba(0,0,0,0.00) 0%,rgba(0,0,0,0.08) 55%,rgba(16,3,4,0.72) 86%,rgba(16,3,4,0.98) 100%),url("' +
-          uploadedImageDataUrl + '") center top / cover no-repeat';
+      reader.onload = function (e) {
+        previewHero.style.background =
+          'linear-gradient(to bottom, rgba(0, 0, 0, 0.00) 0%, rgba(0, 0, 0, 0.08) 55%, rgba(16, 3, 4, 0.72) 86%, rgba(16, 3, 4, 0.98) 100%), url("' +
+          e.target.result +
+          '") center top / cover no-repeat';
       };
       reader.readAsDataURL(file);
     });
 
     const root = document.documentElement;
 
-    function bindColor(inputId, cssVars) {
+    const bindColor = (inputId, cssVars) => {
       const input = document.getElementById(inputId);
-      if (!input) return;
-      const apply = () => cssVars.forEach(v => root.style.setProperty(v, input.value));
-      input.addEventListener("input", apply);
-      apply();
-    }
+      input.addEventListener("input", function () {
+        cssVars.forEach((v) => root.style.setProperty(v, this.value));
+      });
+    };
 
     bindColor("cardBgInput", ["--card-bg"]);
     bindColor("textColorInput", ["--card-text-body", "--card-text-soft"]);
     bindColor("secretColorInput", ["--secret-accent"]);
     bindColor("tagColorInput", ["--tag-accent", "--tag-border"]);
 
-    bindColor("physicalColorInput", ["--physical-accent", "--physical-border", "--physical-line"]);
-    bindColor("physicalBgInput", ["--physical-bg"]);
-
-    bindColor("statColorInput", ["--stat-accent", "--stat-border"]);
-    bindColor("statBgInput", ["--stat-bg"]);
-
+    bindColor("physicalColorInput", ["--physical-accent", "--physical-border"]);
     bindColor("relationColorInput", ["--relation-accent", "--relation-border"]);
-    bindColor("relationBgInput", ["--relation-bg"]);
-
-    bindColor("skillLeftLineColorInput", ["--skill-line-left"]);
-    bindColor("skillRightLineColorInput", ["--skill-line-right"]);
-
-    bindColor("historyColorInput", ["--history-border"]);
-    bindColor("historyBgInput", ["--history-bg"]);
-    bindColor("historyLeftLineColorInput", ["--history-line-left"]);
-    bindColor("historyRightLineColorInput", ["--history-line-right"]);
-
+    bindColor("relationLineColorInput", ["--relation-left-line"]);
+    bindColor("skillColorInput", ["--skill-accent", "--skill-border", "--skill-line"]);
+    bindColor("historyColorInput", ["--history-accent", "--history-border", "--history-line"]);
+    bindColor("statColorInput", ["--stat-accent", "--stat-border"]);
     bindColor("favorColorInput", ["--favor-accent", "--favor-border"]);
-    bindColor("favorBgInput", ["--favor-bg"]);
-
     bindColor("hateColorInput", ["--hate-accent", "--hate-border"]);
-    bindColor("hateBgInput", ["--hate-bg"]);
-
-    document.getElementById("savePngButton").addEventListener("click", async () => {
-      const status = document.getElementById("actionStatus");
-
-      try {
-        status.textContent = "PNG를 준비 중입니다...";
-
-        await document.fonts.ready;
-
-        const card = document.getElementById("profileCard");
-        const rect = card.getBoundingClientRect();
-
-        const SCALE = 2;
-        const W = Math.round(rect.width) * SCALE;
-        const H = Math.round(rect.height) * SCALE;
-
-        const canvas = document.createElement("canvas");
-        canvas.width = W;
-        canvas.height = H;
-        const ctx = canvas.getContext("2d");
-
-        const getCSSVar = (name) => {
-          return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-        };
-
-        const px = (n) => n * SCALE;
-
-        function fillRoundRect(ctx, x, y, w, h, r, fillColor, strokeColor, lineWidth) {
-          const rx = px(x), ry = px(y), rw = px(w), rh = px(h), rr = px(r);
-          ctx.beginPath();
-          ctx.moveTo(rx + rr, ry);
-          ctx.lineTo(rx + rw - rr, ry);
-          ctx.quadraticCurveTo(rx + rw, ry, rx + rw, ry + rr);
-          ctx.lineTo(rx + rw, ry + rh - rr);
-          ctx.quadraticCurveTo(rx + rw, ry + rh, rx + rw - rr, ry + rh);
-          ctx.lineTo(rx + rr, ry + rh);
-          ctx.quadraticCurveTo(rx, ry + rh, rx, ry + rh - rr);
-          ctx.lineTo(rx, ry + rr);
-          ctx.quadraticCurveTo(rx, ry, rx + rr, ry);
-          ctx.closePath();
-          if (fillColor) { ctx.fillStyle = fillColor; ctx.fill(); }
-          if (strokeColor) { ctx.strokeStyle = strokeColor; ctx.lineWidth = lineWidth || 1; ctx.stroke(); }
-        }
-
-        function drawWrappedText(ctx, text, x, y, maxWidth, lineHeight, color, font) {
-          ctx.fillStyle = color;
-          ctx.font = font;
-          const lines = text.split("\n");
-          let curY = y;
-          for (const line of lines) {
-            if (line === "") { curY += lineHeight; continue; }
-            const words = line.split(" ");
-            let curLine = "";
-            for (const word of words) {
-              const test = curLine ? curLine + " " + word : word;
-              if (ctx.measureText(test).width > maxWidth && curLine) {
-                ctx.fillText(curLine, x, curY);
-                curLine = word;
-                curY += lineHeight;
-              } else {
-                curLine = test;
-              }
-            }
-            if (curLine) {
-              ctx.fillText(curLine, x, curY);
-              curY += lineHeight;
-            }
-          }
-          return curY;
-        }
-
-        function measureWrappedTextHeight(ctx, text, maxWidth, lineHeight, font) {
-          ctx.font = font;
-          const lines = text.split("\n");
-          let textH = 0;
-          for (const line of lines) {
-            if (!line.trim()) {
-              textH += lineHeight;
-              continue;
-            }
-            const words = line.split(" ");
-            let cur = "";
-            for (const word of words) {
-              const test = cur ? cur + " " + word : word;
-              if (ctx.measureText(test).width > maxWidth && cur) {
-                textH += lineHeight;
-                cur = word;
-              } else {
-                cur = test;
-              }
-            }
-            textH += lineHeight;
-          }
-          return textH;
-        }
-
-        const cardBg = getCSSVar("--card-bg") || "#120304";
-        const textBody = getCSSVar("--card-text-body") || "#f0dddd";
-        const textSoft = getCSSVar("--card-text-soft") || "#efdddd";
-        const textWhite = getCSSVar("--card-text-white") || "#fff7f7";
-        const statText = getCSSVar("--card-stat-text") || "#fff5f5";
-        const secretAccent = getCSSVar("--secret-accent") || "#ff2d2d";
-        const tagAccent = getCSSVar("--tag-accent") || "#ff2d2d";
-        const tagBorder = getCSSVar("--tag-border") || "#a31717";
-
-        const physBorder = getCSSVar("--physical-border") || "#4a1212";
-        const physBg = getCSSVar("--physical-bg") || "#180607";
-        const physLine = getCSSVar("--physical-line") || "#ff2d2d";
-
-        const statAccent = getCSSVar("--stat-accent") || "#ff2d2d";
-        const statBorder = getCSSVar("--stat-border") || "#931818";
-        const statBg = getCSSVar("--stat-bg") || "#180607";
-
-        const relAccent = getCSSVar("--relation-accent") || "#ff2d2d";
-        const relBorder = getCSSVar("--relation-border") || "#4a1212";
-        const relBg = getCSSVar("--relation-bg") || "#180607";
-
-        const skillLeftLine = getCSSVar("--skill-line-left") || "#df2020";
-        const skillRightLine = getCSSVar("--skill-line-right") || "#df2020";
-
-        const histBorder = getCSSVar("--history-border") || "#4a1212";
-        const histBg = getCSSVar("--history-bg") || "#180607";
-        const histLeftLine = getCSSVar("--history-line-left") || "#df2020";
-        const histRightLine = getCSSVar("--history-line-right") || "#df2020";
-
-        const favorAccent = getCSSVar("--favor-accent") || "#ff2d2d";
-        const favorBorder = getCSSVar("--favor-border") || "#4a1212";
-        const favorBg = getCSSVar("--favor-bg") || "#180607";
-
-        const hateAccent = getCSSVar("--hate-accent") || "#ff2d2d";
-        const hateBorder = getCSSVar("--hate-border") || "#4a1212";
-        const hateBg = getCSSVar("--hate-bg") || "#180607";
-
-        const getValue = (id) => (document.getElementById(id) || {}).value || "";
-
-        const codenameText = getValue("codenameInput");
-        const tagText = getValue("tagInput");
-        const secretText = getValue("secretTextInput") || "PRISM TOP SECRET ASSET";
-        const physicalText = getValue("physicalInput");
-        const ageText = getValue("ageInput");
-        const rankText = getValue("rankInput");
-        const relTitleText = getValue("relationTitleInput");
-        const relBodyText = getValue("relationBodyInput");
-        const skillTitleText = getValue("skillTitleInput");
-        const skillBodyText = getValue("skillBodyInput");
-        const histTitleText = getValue("historyTitleInput");
-        const histBodyText = getValue("historyBodyInput");
-        const favorText = getValue("favorInput");
-        const hateText = getValue("hateInput");
-
-        const CARD_W = 318;
-        const HERO_H = 252;
-        const PAD_X = 14;
-        const PAD_Y = 10;
-        const INNER_W = CARD_W - PAD_X * 2;
-
-        ctx.fillStyle = cardBg;
-        ctx.fillRect(0, 0, W, H);
-
-        if (uploadedImageDataUrl) {
-          await new Promise((resolve) => {
-            const img = new Image();
-            img.onload = () => {
-              const imgW = img.naturalWidth;
-              const imgH = img.naturalHeight;
-              const targetW = px(CARD_W);
-              const targetH = px(HERO_H);
-              const scale = Math.max(targetW / imgW, targetH / imgH);
-              const dW = imgW * scale;
-              const dH = imgH * scale;
-              const dX = (targetW - dW) / 2;
-              const dY = 0;
-              ctx.drawImage(img, dX, dY, dW, dH);
-              resolve();
-            };
-            img.onerror = resolve;
-            img.src = uploadedImageDataUrl;
-          });
-        } else {
-          ctx.fillStyle = "#111111";
-          ctx.fillRect(0, 0, px(CARD_W), px(HERO_H));
-          ctx.fillStyle = "#888888";
-          ctx.font = `${px(12)}px Arial`;
-          ctx.textAlign = "center";
-          ctx.fillText("IMAGE", px(CARD_W / 2), px(HERO_H / 2));
-        }
-
-        const heroGrad = ctx.createLinearGradient(0, 0, 0, px(HERO_H));
-        heroGrad.addColorStop(0.00, "rgba(0,0,0,0.00)");
-        heroGrad.addColorStop(0.55, "rgba(0,0,0,0.08)");
-        heroGrad.addColorStop(0.86, "rgba(16,3,4,0.72)");
-        heroGrad.addColorStop(1.00, "rgba(16,3,4,0.98)");
-        ctx.fillStyle = heroGrad;
-        ctx.fillRect(0, 0, px(CARD_W), px(HERO_H));
-
-        ctx.textAlign = "left";
-        let curY = HERO_H + PAD_Y;
-
-        ctx.font = `800 ${px(10)}px "Noto Sans KR", sans-serif`;
-        ctx.textAlign = "center";
-        ctx.fillStyle = secretAccent;
-        ctx.fillText(secretText, px(CARD_W / 2), px(curY + 10));
-        curY += 20;
-
-        ctx.font = `300 ${px(24)}px "Noto Sans KR", sans-serif`;
-        ctx.fillStyle = textWhite;
-        ctx.fillText(codenameText, px(CARD_W / 2), px(curY + 24));
-        curY += 32;
-
-        if (tagText) {
-          ctx.font = `400 ${px(10)}px "Noto Sans KR", sans-serif`;
-          const tagW = ctx.measureText(tagText).width + px(20);
-          const tagX = px(CARD_W / 2) - tagW / 2;
-          const tagH = px(22);
-          const tagTop = px(curY);
-          ctx.strokeStyle = tagBorder;
-          ctx.lineWidth = px(1);
-          ctx.strokeRect(tagX, tagTop, tagW, tagH);
-          ctx.fillStyle = "rgba(255,0,0,0.02)";
-          ctx.fillRect(tagX, tagTop, tagW, tagH);
-          ctx.fillStyle = tagAccent;
-          ctx.fillText(tagText, px(CARD_W / 2), tagTop + px(14));
-          curY += 32;
-        } else {
-          curY += 10;
-        }
-
-        ctx.textAlign = "left";
-
-        function drawPhysicalPanel(x, y, w, bodyText) {
-          const lineH = px(11) * 1.72;
-          const bodyFont = `400 ${px(11)}px "Noto Sans KR", sans-serif`;
-          const textH = measureWrappedTextHeight(ctx, bodyText, px(w - 24), lineH, bodyFont);
-          const panelH = 12 + 10 + 8 + 8 + (textH / SCALE) + 13;
-
-          fillRoundRect(ctx, x, y, w, panelH, 6, physBg, physBorder, px(1));
-
-          ctx.fillStyle = textWhite;
-          ctx.font = `800 ${px(10)}px "Noto Sans KR", sans-serif`;
-          ctx.fillText("PHYSICAL DESCRIPTION", px(x + 12), px(y + 22));
-
-          const titleWidth = ctx.measureText("PHYSICAL DESCRIPTION").width;
-          const lineY = px(y + 30);
-          ctx.strokeStyle = physLine;
-          ctx.lineWidth = px(1);
-          ctx.beginPath();
-          ctx.moveTo(px(x + 12), lineY);
-          ctx.lineTo(px(x + 12) + titleWidth, lineY);
-          ctx.stroke();
-
-          drawWrappedText(
-            ctx,
-            bodyText,
-            px(x + 12),
-            px(y + 48),
-            px(w - 24),
-            lineH,
-            textBody,
-            bodyFont
-          );
-
-          return y + panelH + 12;
-        }
-
-        curY = drawPhysicalPanel(PAD_X, curY, INNER_W, physicalText);
-
-        const statW = (INNER_W - 10) / 2;
-        const statH = 73;
-
-        function drawStat(label, value, x, y, w, h) {
-          fillRoundRect(ctx, x, y, w, h, 6, statBg, statBorder, px(1));
-          ctx.font = `700 ${px(9)}px "Noto Sans KR", sans-serif`;
-          ctx.fillStyle = statAccent;
-          ctx.textAlign = "center";
-          ctx.fillText(label, px(x + w / 2), px(y + 22));
-          ctx.font = `500 ${px(12)}px "Noto Sans KR", sans-serif`;
-          ctx.fillStyle = statText;
-          ctx.fillText(value, px(x + w / 2), px(y + 42));
-          ctx.textAlign = "left";
-        }
-
-        drawStat("AGE / GEN", ageText, PAD_X, curY, statW, statH);
-        drawStat("RANK / TYPE", rankText, PAD_X + statW + 10, curY, statW, statH);
-        curY += statH + 12;
-
-        function drawRelationPanel(x, y, w, titleText, bodyText) {
-          const bodyFont = `400 ${px(11)}px "Noto Sans KR", sans-serif`;
-          const lineH = px(11) * 1.72;
-          ctx.font = bodyFont;
-          const title = titleText || "RELATION";
-          const titleFont = `800 ${px(14)}px "Noto Sans KR", sans-serif`;
-          ctx.font = titleFont;
-          const titleH = 14;
-          const textH = measureWrappedTextHeight(ctx, bodyText, px(w - 38), lineH, bodyFont);
-          const panelH = 14 + titleH + 12 + (textH / SCALE) + 14;
-
-          const rx = px(x);
-          const ry = px(y);
-          const rw = px(w);
-          const rh = px(panelH);
-          const radius = px(12);
-
-          ctx.beginPath();
-          ctx.moveTo(rx + px(4), ry);
-          ctx.lineTo(rx + rw - radius, ry);
-          ctx.quadraticCurveTo(rx + rw, ry, rx + rw, ry + radius);
-          ctx.lineTo(rx + rw, ry + rh - radius);
-          ctx.quadraticCurveTo(rx + rw, ry + rh, rx + rw - radius, ry + rh);
-          ctx.lineTo(rx + px(4), ry + rh);
-          ctx.lineTo(rx + px(4), ry);
-          ctx.closePath();
-
-          ctx.fillStyle = relBg;
-          ctx.fill();
-          ctx.strokeStyle = relBorder;
-          ctx.lineWidth = px(1);
-          ctx.stroke();
-
-          ctx.fillStyle = relAccent;
-          ctx.fillRect(rx, ry, px(4), rh);
-
-          ctx.fillStyle = textWhite;
-          ctx.font = titleFont;
-          ctx.fillText(title, px(x + 16), px(y + 22));
-
-          drawWrappedText(
-            ctx,
-            bodyText,
-            px(x + 16),
-            px(y + 42),
-            px(w - 32),
-            lineH,
-            textBody,
-            bodyFont
-          );
-
-          return y + panelH + 14;
-        }
-
-        curY = drawRelationPanel(PAD_X, curY, INNER_W, relTitleText, relBodyText);
-
-        function drawSectionHead(x, y, w, title, leftColor, rightColor) {
-          if (!title) return y;
-          ctx.font = `700 ${px(11)}px "Noto Sans KR", sans-serif`;
-          const textW = ctx.measureText(title).width;
-          const leftW = 28;
-          const gap = 10;
-          const rightStart = x + leftW + gap + (textW / SCALE) + gap;
-          const lineY = y + 8;
-
-          ctx.strokeStyle = leftColor;
-          ctx.lineWidth = px(1);
-          ctx.beginPath();
-          ctx.moveTo(px(x), px(lineY));
-          ctx.lineTo(px(x + leftW), px(lineY));
-          ctx.stroke();
-
-          ctx.fillStyle = textWhite;
-          ctx.fillText(title, px(x + leftW + gap), px(y + 12));
-
-          ctx.strokeStyle = rightColor;
-          ctx.beginPath();
-          ctx.moveTo(px(rightStart), px(lineY));
-          ctx.lineTo(px(x + w), px(lineY));
-          ctx.stroke();
-
-          return y + 26;
-        }
-
-        curY = drawSectionHead(PAD_X, curY, INNER_W, skillTitleText, skillLeftLine, skillRightLine);
-
-        if (skillBodyText) {
-          const lineH = px(11) * 1.72;
-          curY = drawWrappedText(
-            ctx,
-            skillBodyText,
-            px(PAD_X),
-            px(curY + 2),
-            px(INNER_W),
-            lineH,
-            textBody,
-            `400 ${px(11)}px "Noto Sans KR", sans-serif`
-          ) / SCALE + 12;
-        }
-
-        curY = drawSectionHead(PAD_X, curY + 4, INNER_W, histTitleText, histLeftLine, histRightLine);
-
-        function drawHistoryPanel(x, y, w, bodyText) {
-          const lineH = px(11) * 1.72;
-          const bodyFont = `400 ${px(11)}px "Noto Sans KR", sans-serif`;
-          const textH = measureWrappedTextHeight(ctx, bodyText, px(w - 24), lineH, bodyFont);
-          const panelH = 12 + (textH / SCALE) + 13;
-
-          fillRoundRect(ctx, x, y, w, panelH, 6, histBg, histBorder, px(1));
-
-          drawWrappedText(
-            ctx,
-            bodyText,
-            px(x + 12),
-            px(y + 20),
-            px(w - 24),
-            lineH,
-            textBody,
-            bodyFont
-          );
-
-          return y + panelH + 12;
-        }
-
-        curY = drawHistoryPanel(PAD_X, curY, INNER_W, histBodyText);
-
-        const miniW = (INNER_W - 10) / 2;
-
-        function drawMini(label, text, accentColor, borderColor, bgColor, x, y, w) {
-          ctx.font = `400 ${px(11)}px "Noto Sans KR", sans-serif`;
-          const lineH = px(11) * 1.68;
-          const textH = measureWrappedTextHeight(
-            ctx,
-            text,
-            px(w - 22),
-            lineH,
-            `400 ${px(11)}px "Noto Sans KR", sans-serif`
-          );
-          const panelH = Math.max(82, 11 + 10 + 10 + textH / SCALE + 12);
-
-          fillRoundRect(ctx, x, y, w, panelH, 6, bgColor, borderColor, px(1));
-
-          ctx.font = `800 ${px(10)}px "Noto Sans KR", sans-serif`;
-          ctx.fillStyle = accentColor;
-          ctx.fillText(label, px(x + 11), px(y + 21));
-
-          drawWrappedText(
-            ctx,
-            text,
-            px(x + 11),
-            px(y + 34),
-            px(w - 22),
-            lineH,
-            textSoft,
-            `400 ${px(11)}px "Noto Sans KR", sans-serif`
-          );
-
-          return y + panelH + 10;
-        }
-
-        const miniEndY = Math.max(
-          drawMini("FAVOR", favorText, favorAccent, favorBorder, favorBg, PAD_X, curY, miniW),
-          drawMini("HATE", hateText, hateAccent, hateBorder, hateBg, PAD_X + miniW + 10, curY, miniW)
-        );
-        curY = miniEndY;
-
-        ctx.fillStyle = cardBg;
-        ctx.fillRect(0, px(curY), px(CARD_W), px(30));
-        ctx.font = `700 ${px(9)}px "Noto Sans KR", sans-serif`;
-        ctx.fillStyle = secretAccent;
-        ctx.textAlign = "center";
-        ctx.fillText("© PRISM FOUNDATION", px(CARD_W / 2), px(curY + 17));
-
-        const finalHeight = px(curY + 30);
-        const finalCanvas = document.createElement("canvas");
-        finalCanvas.width = W;
-        finalCanvas.height = finalHeight;
-        const fc = finalCanvas.getContext("2d");
-        fc.drawImage(canvas, 0, 0);
-
-        const dataUrl = finalCanvas.toDataURL("image/png");
-        const link = document.createElement("a");
-        link.href = dataUrl;
-        link.download = "prism-profile-card.png";
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-
-        status.textContent = "PNG 저장이 완료되었습니다.";
-      } catch (err) {
-        console.error("PNG save error:", err);
-        document.getElementById("actionStatus").textContent = "오류: " + err.message;
-      }
-    });
   </script>
 </body>
 </html>
