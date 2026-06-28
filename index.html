@@ -3,37 +3,627 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>내 프로필 사이트</title>
+  <title>Arch Profile Maker</title>
+  <link rel="preconnect" href="[fonts.googleapis.com](https://fonts.googleapis.com)">
+  <link rel="preconnect" href="[fonts.gstatic.com](https://fonts.gstatic.com)" crossorigin>
+  <link href="[fonts.googleapis.com](https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;800&display=swap)" rel="stylesheet">
+
   <style>
-    body {
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #111;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      padding: 0;
+      background: #070707;
+      color: #f3e9e9;
+      font-family: "Noto Sans KR", sans-serif;
+    }
+
+    body {
       min-height: 100vh;
+      background:
+        radial-gradient(circle at top, rgba(120, 20, 20, 0.15), transparent 25%),
+        linear-gradient(to bottom, #0b0b0b, #050505);
     }
 
-    .box {
+    .site-header {
+      border-bottom: 1px solid rgba(255, 60, 60, 0.15);
+      background: rgba(10, 10, 10, 0.92);
+      backdrop-filter: blur(6px);
+    }
+
+    .site-header-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 18px 20px;
+    }
+
+    .site-title {
+      margin: 0;
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: #fff3f3;
+    }
+
+    .site-sub {
+      margin-top: 6px;
+      font-size: 13px;
+      color: #caa8a8;
+    }
+
+    .layout {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 24px 20px 40px;
+      display: grid;
+      grid-template-columns: 420px minmax(340px, 1fr);
+      gap: 24px;
+      align-items: start;
+    }
+
+    .editor {
+      background: #120405;
+      border: 1px solid #321010;
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+      position: sticky;
+      top: 20px;
+    }
+
+    .editor h2 {
+      margin: 0 0 8px;
+      font-size: 20px;
+      color: #fff3f3;
+    }
+
+    .editor-desc {
+      margin: 0 0 18px;
+      font-size: 13px;
+      line-height: 1.6;
+      color: #c8a5a5;
+    }
+
+    .form-section {
+      margin-bottom: 18px;
+      padding: 14px;
+      border: 1px solid #431414;
+      border-radius: 10px;
+      background: #180607;
+    }
+
+    .form-section-title {
+      margin: 0 0 12px;
+      color: #ff3636;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    .field {
+      margin-bottom: 12px;
+    }
+
+    .field:last-child {
+      margin-bottom: 0;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #f5dfdf;
+    }
+
+    input[type="text"],
+    textarea,
+    input[type="file"] {
+      width: 100%;
+      border: 1px solid #5c1818;
+      background: #0f0303;
+      color: #f5e8e8;
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-family: inherit;
+      font-size: 13px;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+      line-height: 1.6;
+    }
+
+    input[type="file"] {
+      padding: 8px;
+    }
+
+    .preview-area {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 0;
+    }
+
+    .wrap {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+    .card {
+      width: 318px;
+      background: #120304;
+      border: 1px solid #2e0909;
+      border-top: 1px solid #7e1717;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow:
+        0 0 0 1px rgba(255, 40, 40, 0.03),
+        0 0 30px rgba(0, 0, 0, 0.45);
+    }
+
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 252px;
+      background:
+        linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0.00) 0%,
+          rgba(0, 0, 0, 0.08) 55%,
+          rgba(16, 3, 4, 0.72) 86%,
+          rgba(16, 3, 4, 0.98) 100%
+        ),
+        url("[via.placeholder.com](https://via.placeholder.com/318x252/111111/888888?text=IMAGE)") center top / cover no-repeat;
+    }
+
+    .content {
+      background: #120304;
+      padding: 10px 14px 14px;
+    }
+
+    .secret {
       text-align: center;
-      padding: 30px;
-      border: 1px solid #444;
-      border-radius: 12px;
-      background: #1b1b1b;
+      color: #ff2727;
+      font-size: 10px;
+      line-height: 1;
+      letter-spacing: 2.6px;
+      font-weight: 800;
+      margin: 2px 0 10px;
     }
 
-    h1 {
-      margin-top: 0;
-      color: #ff4b4b;
+    .name {
+      margin: 0;
+      text-align: center;
+      color: #fff7f7;
+      font-size: 24px;
+      line-height: 1.05;
+      letter-spacing: 1.1px;
+      font-weight: 300;
+    }
+
+    .tag {
+      display: table;
+      margin: 11px auto 17px;
+      padding: 6px 10px 5px;
+      color: #ff3030;
+      border: 1px solid #a31717;
+      border-radius: 2px;
+      font-size: 10px;
+      line-height: 1;
+      letter-spacing: 1.1px;
+      background: rgba(255, 0, 0, 0.02);
+    }
+
+    .panel {
+      background: #180607;
+      border: 1px solid #4a1212;
+      border-radius: 6px;
+      padding: 12px 12px 13px;
+      margin-bottom: 12px;
+      box-shadow: inset 0 0 0 1px rgba(255, 30, 30, 0.015);
+    }
+
+    .panel-title {
+      color: #fff8f8;
+      font-size: 10px;
+      line-height: 1;
+      letter-spacing: 1.5px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .panel p {
+      margin: 0;
+      color: #f0dddd;
+      font-size: 11px;
+      line-height: 1.72;
+      font-weight: 400;
+      word-break: keep-all;
+      white-space: pre-line;
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .stat {
+      background: #180607;
+      border: 1px solid #931818;
+      border-radius: 6px;
+      min-height: 73px;
+      text-align: center;
+      padding: 11px 8px 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .stat-label {
+      color: #ff2d2d;
+      font-size: 9px;
+      line-height: 1;
+      letter-spacing: 1px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .stat-value {
+      color: #fff5f5;
+      font-size: 12px;
+      line-height: 1.25;
+      font-weight: 500;
+    }
+
+    .section-head {
+      margin: 14px 0 10px;
+      padding-top: 8px;
+      border-top: 1px solid #df2020;
+      color: #fff5f5;
+      font-size: 11px;
+      line-height: 1.4;
+      font-weight: 700;
+    }
+
+    .bottom-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 2px;
+    }
+
+    .mini {
+      background: #180607;
+      border: 1px solid #4a1212;
+      border-radius: 6px;
+      padding: 11px 11px 12px;
+      min-height: 82px;
+    }
+
+    .mini-title {
+      color: #ff2b2b;
+      font-size: 10px;
+      line-height: 1;
+      letter-spacing: 1px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .mini p {
+      margin: 0;
+      color: #efdddd;
+      font-size: 11px;
+      line-height: 1.68;
+      word-break: keep-all;
+      white-space: pre-line;
+    }
+
+    .copyright {
+      text-align: center;
+      color: #ff2b2b;
+      font-size: 9px;
+      line-height: 1;
+      letter-spacing: 2.2px;
+      font-weight: 700;
+      padding: 14px 0 16px;
+      background: #120304;
+    }
+
+    .helper {
+      margin-top: 14px;
+      font-size: 12px;
+      color: #b99595;
+      line-height: 1.7;
+    }
+
+    @media (max-width: 1100px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .editor {
+        position: static;
+      }
+
+      .preview-area {
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .layout {
+        padding: 16px 12px 28px;
+      }
+
+      .site-header-inner {
+        padding: 16px 12px;
+      }
+
+      .editor {
+        padding: 14px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="box">
-    <h1>사이트 연결 성공</h1>
-    <p>여기에 앞으로 프로필 제작 사이트를 만들면 됩니다.</p>
-  </div>
+  <header class="site-header">
+    <div class="site-header-inner">
+      <h1 class="site-title">ARCH PROFILE MAKER</h1>
+      <div class="site-sub">입력한 내용을 바탕으로 오른쪽 프로필 카드가 실시간으로 바뀝니다.</div>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="editor">
+      <h2>프로필 편집기</h2>
+      <p class="editor-desc">
+        왼쪽 입력칸에 내용을 넣으면 오른쪽 카드에 바로 반영됩니다.
+        처음에는 텍스트 수정과 이미지 업로드만 되는 기본형입니다.
+      </p>
+
+      <div class="form-section">
+        <h3 class="form-section-title">기본 정보</h3>
+
+        <div class="field">
+          <label for="imageInput">상단 이미지 업로드</label>
+          <input type="file" id="imageInput" accept="image/*" />
+        </div>
+
+        <div class="field">
+          <label for="secretInput">상단 문구</label>
+          <input type="text" id="secretInput" value="PRISM TOP SECRET ASSET" />
+        </div>
+
+        <div class="field">
+          <label for="nameInput">이름</label>
+          <input type="text" id="nameInput" value="NOVA" />
+        </div>
+
+        <div class="field">
+          <label for="tagInput">태그</label>
+          <input type="text" id="tagInput" value="[ A - C - NOVA / 노바 ]" />
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3 class="form-section-title">외형 / 스탯</h3>
+
+        <div class="field">
+          <label for="physicalInput">PHYSICAL DESCRIPTION</label>
+          <textarea id="physicalInput">162cm의 아담한 키와 왜소하고 갸냘픈 체구를 지녔으며, 보호본능을 자극하는 인상을 풍깁니다.
+긴 흑발을 로우 트윈테일로 묶어 늘어뜨렸고, 처피뱅 앞머리가 개성을 더합니다.
+창백한 피부와 형광 연두색 눈동자, 살짝 올라간 눈꼬리가 어우러져 신비롭고 날카로운 분위기를 자아냅니다.
+의상은 레드&블랙 고스펑크 스타일을 기반으로, 블랙 망사 탑 위에 붉은 십자가 장식의 가죽 코르셋을 착용했습니다.
+하의는 레드와 블랙 체크 미니 스커트에 가죽 벨트와 체인 장식을 더했으며, 체크 초커와 십자가 목걸이로 강렬하면서도 반항적인 분위기를 완성합니다.</textarea>
+        </div>
+
+        <div class="field">
+          <label for="ageInput">AGE / GEN</label>
+          <input type="text" id="ageInput" value="26 / Female" />
+        </div>
+
+        <div class="field">
+          <label for="rankInput">RANK / TYPE</label>
+          <input type="text" id="rankInput" value="A-Rank / Combat" />
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3 class="form-section-title">관계 / 능력 / 서사</h3>
+
+        <div class="field">
+          <label for="relationTitleInput">관계 섹션 제목</label>
+          <input type="text" id="relationTitleInput" value="WITH 시엘 : 나, 마음에 든다." />
+        </div>
+
+        <div class="field">
+          <label for="relationBodyInput">관계 섹션 본문</label>
+          <textarea id="relationBodyInput">임무를 지독하게 깔끔한 단숨에 끝내버린 시엘의 힘은, 세상 모든 게 지루하던 노바의 눈을 단번에 사로잡기에 충분했습니다.
+앞으로 곁에 누군가 전장을 엎어놓고 만들던 과거의 전투 타입 파트너들과는 전혀 달랐습니다.
+그 정교하고 무결한 능력 운용을 본 순간, 수년간 이어져 온 지독한 공허함이 단숨에 날아가는 듯했습니다.</textarea>
+        </div>
+
+        <div class="field">
+          <label for="skillTitleInput">능력 섹션 제목</label>
+          <input type="text" id="skillTitleInput" value="고밀도 플라즈마 방출 (High-Density Plasma)" />
+        </div>
+
+        <div class="field">
+          <label for="skillBodyInput">능력 섹션 본문</label>
+          <textarea id="skillBodyInput">공기 중의 입자를 초고온으로 순식간에 가열하여, 고체·액체·기체를 넘어선 제4의 물질 상태인 플라즈마를 생성하고 자유자재로 방출합니다.
+일반적인 화염 능력과는 궤를 달리하는 초고열의 압도적인 파괴력을 자랑합니다.</textarea>
+        </div>
+
+        <div class="field">
+          <label for="historyTitleInput">서사 섹션 제목</label>
+          <input type="text" id="historyTitleInput" value="서사 / 특징 (History)" />
+        </div>
+
+        <div class="field">
+          <label for="historyBody1Input">서사 첫 번째 박스</label>
+          <textarea id="historyBody1Input">어린 시절에는 스스로 통제하지 못하고 흘러나오는 강렬한 열기 때문에, 의도치 않게 주변 물건을 태워 늘 혼자 지냈습니다.
+뒤틀린 불안이 자라면서, 그는 늘 흔들림 없는 표정을 유지하려 애썼습니다.</textarea>
+        </div>
+
+        <div class="field">
+          <label for="historyBody2Input">서사 두 번째 박스</label>
+          <textarea id="historyBody2Input">복잡한 전장을 지나 돌아온 뒤에도, 아무도 등을 두드려주지 않는 정적 속에서 공허함은 더 짙어졌습니다.
+그럼에도 그는 오늘도 자신의 방식대로 앞으로 나아갑니다.</textarea>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3 class="form-section-title">기호</h3>
+
+        <div class="field">
+          <label for="favorInput">FAVOR</label>
+          <textarea id="favorInput">탄산 음료, 시끄러운 음악, 예쁜 액세서리</textarea>
+        </div>
+
+        <div class="field">
+          <label for="hateInput">HATE</label>
+          <textarea id="hateInput">눅눅한 날씨, 비효율적인 태도</textarea>
+        </div>
+      </div>
+
+      <p class="helper">
+        GitHub에서 지금은 이 파일 하나만 수정해도 됩니다.
+        나중에 익숙해지면 CSS와 JavaScript를 따로 분리하면 됩니다.
+      </p>
+    </section>
+
+    <section class="preview-area">
+      <div class="wrap">
+        <div class="card">
+          <div class="hero" id="previewHero"></div>
+
+          <div class="content">
+            <div class="secret" id="previewSecret">PRISM TOP SECRET ASSET</div>
+
+            <h1 class="name" id="previewName">NOVA</h1>
+
+            <div class="tag" id="previewTag">[ A - C - NOVA / 노바 ]</div>
+
+            <section class="panel">
+              <div class="panel-title">PHYSICAL DESCRIPTION</div>
+              <p id="previewPhysical">
+                162cm의 아담한 키와 왜소하고 갸냘픈 체구를 지녔으며, 보호본능을 자극하는 인상을 풍깁니다.
+              </p>
+            </section>
+
+            <div class="stat-grid">
+              <div class="stat">
+                <div class="stat-label">AGE / GEN</div>
+                <div class="stat-value" id="previewAge">26 / Female</div>
+              </div>
+
+              <div class="stat">
+                <div class="stat-label">RANK / TYPE</div>
+                <div class="stat-value" id="previewRank">A-Rank / Combat</div>
+              </div>
+            </div>
+
+            <section class="panel">
+              <div class="panel-title" id="previewRelationTitle">WITH 시엘 : 나, 마음에 든다.</div>
+              <p id="previewRelationBody">
+                임무를 지독하게 깔끔한 단숨에 끝내버린 시엘의 힘은, 세상 모든 게 지루하던 노바의 눈을 단번에 사로잡기에 충분했습니다.
+              </p>
+            </section>
+
+            <div class="section-head" id="previewSkillTitle">고밀도 플라즈마 방출 (High-Density Plasma)</div>
+
+            <section class="panel">
+              <p id="previewSkillBody">
+                공기 중의 입자를 초고온으로 순식간에 가열하여, 고체·액체·기체를 넘어선 제4의 물질 상태인 플라즈마를 생성하고 자유자재로 방출합니다.
+              </p>
+            </section>
+
+            <div class="section-head" id="previewHistoryTitle">서사 / 특징 (History)</div>
+
+            <section class="panel">
+              <p id="previewHistoryBody1">
+                어린 시절에는 스스로 통제하지 못하고 흘러나오는 강렬한 열기 때문에, 의도치 않게 주변 물건을 태워 늘 혼자 지냈습니다.
+              </p>
+            </section>
+
+            <section class="panel">
+              <p id="previewHistoryBody2">
+                복잡한 전장을 지나 돌아온 뒤에도, 아무도 등을 두드려주지 않는 정적 속에서 공허함은 더 짙어졌습니다.
+              </p>
+            </section>
+
+            <div class="bottom-grid">
+              <section class="mini">
+                <div class="mini-title">FAVOR</div>
+                <p id="previewFavor">탄산 음료, 시끄러운 음악, 예쁜 액세서리</p>
+              </section>
+
+              <section class="mini">
+                <div class="mini-title">HATE</div>
+                <p id="previewHate">눅눅한 날씨, 비효율적인 태도</p>
+              </section>
+            </div>
+          </div>
+
+          <div class="copyright">© PRISM FOUNDATION</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const bindText = (inputId, previewId) => {
+      const input = document.getElementById(inputId);
+      const preview = document.getElementById(previewId);
+
+      const update = () => {
+        preview.textContent = input.value;
+      };
+
+      input.addEventListener("input", update);
+      update();
+    };
+
+    bindText("secretInput", "previewSecret");
+    bindText("nameInput", "previewName");
+    bindText("tagInput", "previewTag");
+    bindText("physicalInput", "previewPhysical");
+    bindText("ageInput", "previewAge");
+    bindText("rankInput", "previewRank");
+    bindText("relationTitleInput", "previewRelationTitle");
+    bindText("relationBodyInput", "previewRelationBody");
+    bindText("skillTitleInput", "previewSkillTitle");
+    bindText("skillBodyInput", "previewSkillBody");
+    bindText("historyTitleInput", "previewHistoryTitle");
+    bindText("historyBody1Input", "previewHistoryBody1");
+    bindText("historyBody2Input", "previewHistoryBody2");
+    bindText("favorInput", "previewFavor");
+    bindText("hateInput", "previewHate");
+
+    const imageInput = document.getElementById("imageInput");
+    const previewHero = document.getElementById("previewHero");
+
+    imageInput.addEventListener("change", function () {
+      const file = this.files && this.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        previewHero.style.background =
+          'linear-gradient(to bottom, rgba(0, 0, 0, 0.00) 0%, rgba(0, 0, 0, 0.08) 55%, rgba(16, 3, 4, 0.72) 86%, rgba(16, 3, 4, 0.98) 100%), url("' +
+          e.target.result +
+          '") center top / cover no-repeat';
+      };
+      reader.readAsDataURL(file);
+    });
+  </script>
 </body>
 </html>
