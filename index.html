@@ -991,6 +991,8 @@
         const bodyFont11 = `400 ${px(11)}px "Noto Sans KR",sans-serif`;
         const lineH11 = px(11)*1.72;
         const lineH168 = px(11)*1.68;
+        const statValFont12 = `500 ${px(12)}px "Noto Sans KR",sans-serif`;
+        const lineH125 = px(12)*1.25;
 
         let calcY = HERO_H + 10;
         calcY += 20; // 상단 문구 영역
@@ -1002,8 +1004,14 @@
         const physPH = 12+10+8+8+(physTextH/SCALE)+13;
         calcY += physPH + 12;
 
-        // STATS HEIGHT
-        calcY += 73 + 12;
+        // STATS HEIGHT (값이 길어 줄바꿈되면 박스 높이를 늘리고, 양쪽 박스는 같은 높이로 맞춥니다)
+        const statInnerW = (INNER_W-10)/2 - 32;
+        const ageValH = measureTextH(tempCtx, ageText,  px(statInnerW), lineH125, statValFont12);
+        const agePH = Math.max(73, 11+10+(ageValH/SCALE)+10);
+        const rankValH = measureTextH(tempCtx, rankText, px(statInnerW), lineH125, statValFont12);
+        const rankPH = Math.max(73, 11+10+(rankValH/SCALE)+10);
+        const statPH = Math.max(agePH, rankPH);
+        calcY += statPH + 12;
 
         // RELATION HEIGHT
         const relTextH = measureTextH(tempCtx, relBodyText, px(INNER_W-32), lineH11, bodyFont11);
@@ -1143,19 +1151,39 @@
         curY = drawPhysPanel(PAD_X, curY, INNER_W, physicalText);
 
         const statW = (INNER_W-10)/2;
-        function drawStat(label, val, x, y, w, h) {
-          fillRoundRect(ctx, x, y, w, h, 6, statBg, statBorder, px(1));
+        function drawTextCenter(ctx, text, cx, y, maxW, lineH, color, font) {
+          ctx.font = font; ctx.fillStyle = color; ctx.textAlign = "center";
+          let cy = y;
+          for (const line of text.split("\n")) {
+            if (!line) { cy += lineH; continue; }
+            let cur = "";
+            for (let i = 0; i < line.length; i++) {
+              const char = line[i];
+              const test = cur + char;
+              if (ctx.measureText(test).width > maxW && cur) {
+                ctx.fillText(cur, cx, cy);
+                cy += lineH;
+                cur = char;
+              } else {
+                cur = test;
+              }
+            }
+            if (cur) { ctx.fillText(cur, cx, cy); cy += lineH; }
+          }
+          ctx.textAlign = "left";
+          return cy;
+        }
+        function drawStat(label, val, x, y, w, forcedH) {
+          fillRoundRect(ctx, x, y, w, forcedH, 6, statBg, statBorder, px(1));
           ctx.font = `700 ${px(9)}px "Noto Sans KR",sans-serif`;
           ctx.fillStyle = statAccent; ctx.textAlign = "center";
           ctx.fillText(label, px(x+w/2), px(y+22));
-          ctx.font = `500 ${px(12)}px "Noto Sans KR",sans-serif`;
-          ctx.fillStyle = statText;
-          ctx.fillText(val, px(x+w/2), px(y+42));
           ctx.textAlign = "left";
+          drawTextCenter(ctx, val, px(x+w/2), px(y+42), px(w-32), lineH125, statText, statValFont12);
         }
-        drawStat("AGE / GEN",  ageText,  PAD_X,           curY, statW, 73);
-        drawStat("RANK / TYPE",rankText, PAD_X+statW+10,  curY, statW, 73);
-        curY += 73+12;
+        drawStat("AGE / GEN",  ageText,  PAD_X,           curY, statW, statPH);
+        drawStat("RANK / TYPE",rankText, PAD_X+statW+10,  curY, statW, statPH);
+        curY += statPH+12;
 
         function drawRelPanel(x, y, w, title, body) {
           const textH = measureTextH(ctx, body, px(w-32), lineH11, bodyFont11);
