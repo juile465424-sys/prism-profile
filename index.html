@@ -40,16 +40,19 @@
       --physical-accent: #ff2d2d;
       --physical-border: #4a1212;
       --physical-bg: #180607;
+      --physical-line: #ff2d2d;
       --relation-accent: #ff2d2d;
       --relation-border: #4a1212;
       --relation-bg: #180607;
       --skill-accent: #ff2d2d;
       --skill-border: #4a1212;
-      --skill-line: #df2020;
+      --skill-line-left: #df2020;
+      --skill-line-right: #df2020;
       --skill-bg: #180607;
       --history-accent: #ff2d2d;
       --history-border: #4a1212;
-      --history-line: #df2020;
+      --history-line-left: #df2020;
+      --history-line-right: #df2020;
       --history-bg: #180607;
       --stat-accent: #ff2d2d;
       --stat-border: #931818;
@@ -161,7 +164,6 @@
     textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
     input[type="file"] { padding: 8px; }
 
-    /* 색상 피커 두 개를 나란히 */
     .color-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -203,7 +205,6 @@
 
     .wrap { width: 100%; display: flex; justify-content: center; }
 
-    /* ── CARD ── */
     .card {
       width: 318px;
       background: var(--card-bg);
@@ -277,15 +278,49 @@
       word-break: keep-all; white-space: pre-line;
     }
 
-    .panel-physical { background: var(--physical-bg); border: 1px solid var(--physical-border); }
-    .panel-physical .panel-title { color: var(--physical-accent); }
+    .panel-physical {
+      background: var(--physical-bg);
+      border: 1px solid var(--physical-border);
+    }
 
-    .panel-relation { background: var(--relation-bg); border: 1px solid var(--relation-border); }
-    .panel-relation .panel-title { color: var(--relation-accent); }
+    .panel-physical .panel-title {
+      color: var(--card-text-white);
+      display: inline-block;
+      margin-bottom: 8px;
+      padding: 0 0 6px 0;
+      border-bottom: 1px solid var(--physical-line);
+    }
 
-    .panel-skill { background: var(--skill-bg); border: 1px solid var(--skill-border); }
+    .panel-relation {
+      position: relative;
+      background: var(--relation-bg);
+      border: 1px solid var(--relation-border);
+      border-left: 4px solid var(--relation-accent);
+      border-radius: 0 12px 12px 0;
+      padding: 14px 16px 14px 22px;
+    }
 
-    .panel-history { background: var(--history-bg); border: 1px solid var(--history-border); }
+    .panel-relation .panel-title {
+      color: var(--card-text-white);
+      font-size: 14px;
+      line-height: 1.4;
+      letter-spacing: 0;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .panel-skill {
+      background: transparent;
+      border: none;
+      padding: 0;
+      margin-bottom: 12px;
+      box-shadow: none;
+    }
+
+    .panel-history {
+      background: var(--history-bg);
+      border: 1px solid var(--history-border);
+    }
 
     .stat-grid {
       display: grid; grid-template-columns: 1fr 1fr;
@@ -308,12 +343,41 @@
     .stat-value { color: var(--card-stat-text); font-size: 12px; line-height: 1.25; font-weight: 500; }
 
     .section-head {
-      margin: 14px 0 10px; padding-top: 8px;
+      margin: 14px 0 10px;
       font-size: 11px; line-height: 1.4; font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--card-text-white);
     }
 
-    .section-head-skill { border-top: 1px solid var(--skill-line); color: var(--skill-accent); }
-    .section-head-history { border-top: 1px solid var(--history-line); color: var(--history-accent); }
+    .section-head::before,
+    .section-head::after {
+      content: "";
+      display: block;
+      height: 1px;
+      flex-shrink: 0;
+    }
+
+    .section-head-skill::before {
+      width: 28px;
+      background: var(--skill-line-left);
+    }
+
+    .section-head-skill::after {
+      flex: 1;
+      background: var(--skill-line-right);
+    }
+
+    .section-head-history::before {
+      width: 28px;
+      background: var(--history-line-left);
+    }
+
+    .section-head-history::after {
+      flex: 1;
+      background: var(--history-line-right);
+    }
 
     .bottom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 2px; }
 
@@ -376,7 +440,6 @@
         <div class="action-status" id="actionStatus"></div>
       </div>
 
-      <!-- 전체 카드 색상 -->
       <div class="form-section">
         <h3 class="form-section-title">전체 카드 색상</h3>
 
@@ -401,7 +464,6 @@
         </div>
       </div>
 
-      <!-- 기본 정보 -->
       <div class="form-section">
         <h3 class="form-section-title">기본 정보</h3>
 
@@ -426,7 +488,6 @@
         </div>
       </div>
 
-      <!-- 외형 / 스탯 -->
       <div class="form-section">
         <h3 class="form-section-title">외형 / 스탯</h3>
 
@@ -435,7 +496,7 @@
           <textarea id="physicalInput"></textarea>
           <div class="color-row">
             <div class="color-cell">
-              <label for="physicalColorInput">텍스트·테두리 색상</label>
+              <label for="physicalColorInput">텍스트·테두리·선 색상</label>
               <input type="color" id="physicalColorInput" value="#ff2d2d" />
             </div>
             <div class="color-cell">
@@ -466,7 +527,6 @@
         </div>
       </div>
 
-      <!-- 관계 / 능력 / 서사 -->
       <div class="form-section">
         <h3 class="form-section-title">관계 / 능력 / 서사</h3>
 
@@ -480,7 +540,7 @@
           <textarea id="relationBodyInput"></textarea>
           <div class="color-row">
             <div class="color-cell">
-              <label for="relationColorInput">텍스트·테두리 색상</label>
+              <label for="relationColorInput">왼쪽 강조선·테두리 색상</label>
               <input type="color" id="relationColorInput" value="#ff2d2d" />
             </div>
             <div class="color-cell">
@@ -493,26 +553,36 @@
         <div class="field">
           <label for="skillTitleInput">능력 섹션 제목</label>
           <input type="text" id="skillTitleInput" value="" />
-        </div>
-
-        <div class="field">
-          <label for="skillBodyInput">능력 섹션 본문</label>
-          <textarea id="skillBodyInput"></textarea>
           <div class="color-row">
             <div class="color-cell">
-              <label for="skillColorInput">텍스트·테두리·구분선 색상</label>
-              <input type="color" id="skillColorInput" value="#ff2d2d" />
+              <label for="skillLeftLineColorInput">왼쪽 짧은 선 색상</label>
+              <input type="color" id="skillLeftLineColorInput" value="#df2020" />
             </div>
             <div class="color-cell">
-              <label for="skillBgInput">배경 색상</label>
-              <input type="color" id="skillBgInput" value="#180607" />
+              <label for="skillRightLineColorInput">오른쪽 긴 선 색상</label>
+              <input type="color" id="skillRightLineColorInput" value="#df2020" />
             </div>
           </div>
         </div>
 
         <div class="field">
+          <label for="skillBodyInput">능력 섹션 본문</label>
+          <textarea id="skillBodyInput"></textarea>
+        </div>
+
+        <div class="field">
           <label for="historyTitleInput">서사 섹션 제목</label>
           <input type="text" id="historyTitleInput" value="" />
+          <div class="color-row">
+            <div class="color-cell">
+              <label for="historyLeftLineColorInput">왼쪽 짧은 선 색상</label>
+              <input type="color" id="historyLeftLineColorInput" value="#df2020" />
+            </div>
+            <div class="color-cell">
+              <label for="historyRightLineColorInput">오른쪽 긴 선 색상</label>
+              <input type="color" id="historyRightLineColorInput" value="#df2020" />
+            </div>
+          </div>
         </div>
 
         <div class="field">
@@ -520,18 +590,17 @@
           <textarea id="historyBodyInput"></textarea>
           <div class="color-row">
             <div class="color-cell">
-              <label for="historyColorInput">텍스트·테두리·구분선 색상</label>
+              <label for="historyColorInput">본문 박스 테두리 색상</label>
               <input type="color" id="historyColorInput" value="#ff2d2d" />
             </div>
             <div class="color-cell">
-              <label for="historyBgInput">배경 색상</label>
+              <label for="historyBgInput">본문 박스 배경 색상</label>
               <input type="color" id="historyBgInput" value="#180607" />
             </div>
           </div>
         </div>
       </div>
 
-      <!-- 기호 -->
       <div class="form-section">
         <h3 class="form-section-title">기호</h3>
 
@@ -571,7 +640,6 @@
       </p>
     </section>
 
-    <!-- ── PREVIEW ── -->
     <section class="preview-area">
       <div class="wrap">
         <div class="card" id="profileCard">
@@ -632,7 +700,6 @@
   </main>
 
   <script>
-    /* ── 텍스트 바인딩 ── */
     function bindText(inputId, previewId) {
       const input = document.getElementById(inputId);
       const preview = document.getElementById(previewId);
@@ -642,22 +709,21 @@
       update();
     }
 
-    bindText("secretTextInput",   "previewSecret");
-    bindText("codenameInput",     "previewCodename");
-    bindText("tagInput",          "previewTag");
-    bindText("physicalInput",     "previewPhysical");
-    bindText("ageInput",          "previewAge");
-    bindText("rankInput",         "previewRank");
-    bindText("relationTitleInput","previewRelationTitle");
+    bindText("secretTextInput", "previewSecret");
+    bindText("codenameInput", "previewCodename");
+    bindText("tagInput", "previewTag");
+    bindText("physicalInput", "previewPhysical");
+    bindText("ageInput", "previewAge");
+    bindText("rankInput", "previewRank");
+    bindText("relationTitleInput", "previewRelationTitle");
     bindText("relationBodyInput", "previewRelationBody");
-    bindText("skillTitleInput",   "previewSkillTitle");
-    bindText("skillBodyInput",    "previewSkillBody");
+    bindText("skillTitleInput", "previewSkillTitle");
+    bindText("skillBodyInput", "previewSkillBody");
     bindText("historyTitleInput", "previewHistoryTitle");
-    bindText("historyBodyInput",  "previewHistoryBody");
-    bindText("favorInput",        "previewFavor");
-    bindText("hateInput",         "previewHate");
+    bindText("historyBodyInput", "previewHistoryBody");
+    bindText("favorInput", "previewFavor");
+    bindText("hateInput", "previewHate");
 
-    /* ── 이미지 업로드 ── */
     let uploadedImageDataUrl = null;
 
     document.getElementById("imageInput").addEventListener("change", function () {
@@ -673,7 +739,6 @@
       reader.readAsDataURL(file);
     });
 
-    /* ── CSS 변수 바인딩 ── */
     const root = document.documentElement;
 
     function bindColor(inputId, cssVars) {
@@ -684,90 +749,77 @@
       apply();
     }
 
-    /* 전체 카드 */
-    bindColor("cardBgInput",    ["--card-bg"]);
+    bindColor("cardBgInput", ["--card-bg"]);
     bindColor("textColorInput", ["--card-text-body", "--card-text-soft"]);
-    bindColor("secretColorInput",["--secret-accent"]);
-    bindColor("tagColorInput",  ["--tag-accent","--tag-border"]);
+    bindColor("secretColorInput", ["--secret-accent"]);
+    bindColor("tagColorInput", ["--tag-accent", "--tag-border"]);
 
-    /* 외형 */
-    bindColor("physicalColorInput", ["--physical-accent","--physical-border"]);
-    bindColor("physicalBgInput",    ["--physical-bg"]);
+    bindColor("physicalColorInput", ["--physical-accent", "--physical-border", "--physical-line"]);
+    bindColor("physicalBgInput", ["--physical-bg"]);
 
-    /* 스탯 */
-    bindColor("statColorInput", ["--stat-accent","--stat-border"]);
-    bindColor("statBgInput",    ["--stat-bg"]);
+    bindColor("statColorInput", ["--stat-accent", "--stat-border"]);
+    bindColor("statBgInput", ["--stat-bg"]);
 
-    /* 관계 */
-    bindColor("relationColorInput", ["--relation-accent","--relation-border"]);
-    bindColor("relationBgInput",    ["--relation-bg"]);
+    bindColor("relationColorInput", ["--relation-accent", "--relation-border"]);
+    bindColor("relationBgInput", ["--relation-bg"]);
 
-    /* 능력 */
-    bindColor("skillColorInput", ["--skill-accent","--skill-border","--skill-line"]);
-    bindColor("skillBgInput",    ["--skill-bg"]);
+    bindColor("skillLeftLineColorInput", ["--skill-line-left"]);
+    bindColor("skillRightLineColorInput", ["--skill-line-right"]);
 
-    /* 서사 */
-    bindColor("historyColorInput", ["--history-accent","--history-border","--history-line"]);
-    bindColor("historyBgInput",    ["--history-bg"]);
+    bindColor("historyColorInput", ["--history-border"]);
+    bindColor("historyBgInput", ["--history-bg"]);
+    bindColor("historyLeftLineColorInput", ["--history-line-left"]);
+    bindColor("historyRightLineColorInput", ["--history-line-right"]);
 
-    /* FAVOR */
-    bindColor("favorColorInput", ["--favor-accent","--favor-border"]);
-    bindColor("favorBgInput",    ["--favor-bg"]);
+    bindColor("favorColorInput", ["--favor-accent", "--favor-border"]);
+    bindColor("favorBgInput", ["--favor-bg"]);
 
-    /* HATE */
-    bindColor("hateColorInput", ["--hate-accent","--hate-border"]);
-    bindColor("hateBgInput",    ["--hate-bg"]);
+    bindColor("hateColorInput", ["--hate-accent", "--hate-border"]);
+    bindColor("hateBgInput", ["--hate-bg"]);
 
-    /* ── PNG 저장 (html2canvas 없이 네이티브 Canvas API 사용) ── */
     document.getElementById("savePngButton").addEventListener("click", async () => {
       const status = document.getElementById("actionStatus");
 
       try {
         status.textContent = "PNG를 준비 중입니다...";
 
-        // 폰트 로드 대기
         await document.fonts.ready;
 
         const card = document.getElementById("profileCard");
         const rect = card.getBoundingClientRect();
 
-        // 스케일
         const SCALE = 2;
-        const W = Math.round(rect.width)  * SCALE;
+        const W = Math.round(rect.width) * SCALE;
         const H = Math.round(rect.height) * SCALE;
 
-        const canvas  = document.createElement("canvas");
-        canvas.width  = W;
+        const canvas = document.createElement("canvas");
+        canvas.width = W;
         canvas.height = H;
         const ctx = canvas.getContext("2d");
 
-        // 계산된 CSS 스타일에서 색상 읽기
-        const cs = getComputedStyle(card);
         const getCSSVar = (name) => {
-          return getComputedStyle(document.documentElement)
-            .getPropertyValue(name).trim();
+          return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
         };
 
-        // ── 헬퍼 함수 ──
         const px = (n) => n * SCALE;
 
         function fillRoundRect(ctx, x, y, w, h, r, fillColor, strokeColor, lineWidth) {
+          const rx = px(x), ry = px(y), rw = px(w), rh = px(h), rr = px(r);
           ctx.beginPath();
-          ctx.moveTo(px(x) + r, px(y));
-          ctx.lineTo(px(x) + px(w) - r, px(y));
-          ctx.quadraticCurveTo(px(x) + px(w), px(y), px(x) + px(w), px(y) + r);
-          ctx.lineTo(px(x) + px(w), px(y) + px(h) - r);
-          ctx.quadraticCurveTo(px(x) + px(w), px(y) + px(h), px(x) + px(w) - r, px(y) + px(h));
-          ctx.lineTo(px(x) + r, px(y) + px(h));
-          ctx.quadraticCurveTo(px(x), px(y) + px(h), px(x), px(y) + px(h) - r);
-          ctx.lineTo(px(x), px(y) + r);
-          ctx.quadraticCurveTo(px(x), px(y), px(x) + r, px(y));
+          ctx.moveTo(rx + rr, ry);
+          ctx.lineTo(rx + rw - rr, ry);
+          ctx.quadraticCurveTo(rx + rw, ry, rx + rw, ry + rr);
+          ctx.lineTo(rx + rw, ry + rh - rr);
+          ctx.quadraticCurveTo(rx + rw, ry + rh, rx + rw - rr, ry + rh);
+          ctx.lineTo(rx + rr, ry + rh);
+          ctx.quadraticCurveTo(rx, ry + rh, rx, ry + rh - rr);
+          ctx.lineTo(rx, ry + rr);
+          ctx.quadraticCurveTo(rx, ry, rx + rr, ry);
           ctx.closePath();
           if (fillColor) { ctx.fillStyle = fillColor; ctx.fill(); }
           if (strokeColor) { ctx.strokeStyle = strokeColor; ctx.lineWidth = lineWidth || 1; ctx.stroke(); }
         }
 
-        // ── 텍스트를 다중 라인으로 분할해 그리기 ──
         function drawWrappedText(ctx, text, x, y, maxWidth, lineHeight, color, font) {
           ctx.fillStyle = color;
           ctx.font = font;
@@ -787,92 +839,115 @@
                 curLine = test;
               }
             }
-            if (curLine) { ctx.fillText(curLine, x, curY); curY += lineHeight; }
+            if (curLine) {
+              ctx.fillText(curLine, x, curY);
+              curY += lineHeight;
+            }
           }
           return curY;
         }
 
-        // ── 색상값 수집 ──
-        const cardBg          = getCSSVar("--card-bg")          || "#120304";
-        const textBody        = getCSSVar("--card-text-body")   || "#f0dddd";
-        const textSoft        = getCSSVar("--card-text-soft")   || "#efdddd";
-        const textWhite       = getCSSVar("--card-text-white")  || "#fff7f7";
-        const statText        = getCSSVar("--card-stat-text")   || "#fff5f5";
-        const secretAccent    = getCSSVar("--secret-accent")    || "#ff2d2d";
-        const tagAccent       = getCSSVar("--tag-accent")       || "#ff2d2d";
-        const tagBorder       = getCSSVar("--tag-border")       || "#a31717";
+        function measureWrappedTextHeight(ctx, text, maxWidth, lineHeight, font) {
+          ctx.font = font;
+          const lines = text.split("\n");
+          let textH = 0;
+          for (const line of lines) {
+            if (!line.trim()) {
+              textH += lineHeight;
+              continue;
+            }
+            const words = line.split(" ");
+            let cur = "";
+            for (const word of words) {
+              const test = cur ? cur + " " + word : word;
+              if (ctx.measureText(test).width > maxWidth && cur) {
+                textH += lineHeight;
+                cur = word;
+              } else {
+                cur = test;
+              }
+            }
+            textH += lineHeight;
+          }
+          return textH;
+        }
 
-        const physAccent      = getCSSVar("--physical-accent")  || "#ff2d2d";
-        const physBorder      = getCSSVar("--physical-border")  || "#4a1212";
-        const physBg          = getCSSVar("--physical-bg")      || "#180607";
+        const cardBg = getCSSVar("--card-bg") || "#120304";
+        const textBody = getCSSVar("--card-text-body") || "#f0dddd";
+        const textSoft = getCSSVar("--card-text-soft") || "#efdddd";
+        const textWhite = getCSSVar("--card-text-white") || "#fff7f7";
+        const statText = getCSSVar("--card-stat-text") || "#fff5f5";
+        const secretAccent = getCSSVar("--secret-accent") || "#ff2d2d";
+        const tagAccent = getCSSVar("--tag-accent") || "#ff2d2d";
+        const tagBorder = getCSSVar("--tag-border") || "#a31717";
 
-        const statAccent      = getCSSVar("--stat-accent")      || "#ff2d2d";
-        const statBorder      = getCSSVar("--stat-border")      || "#931818";
-        const statBg          = getCSSVar("--stat-bg")          || "#180607";
+        const physBorder = getCSSVar("--physical-border") || "#4a1212";
+        const physBg = getCSSVar("--physical-bg") || "#180607";
+        const physLine = getCSSVar("--physical-line") || "#ff2d2d";
 
-        const relAccent       = getCSSVar("--relation-accent")  || "#ff2d2d";
-        const relBorder       = getCSSVar("--relation-border")  || "#4a1212";
-        const relBg           = getCSSVar("--relation-bg")      || "#180607";
+        const statAccent = getCSSVar("--stat-accent") || "#ff2d2d";
+        const statBorder = getCSSVar("--stat-border") || "#931818";
+        const statBg = getCSSVar("--stat-bg") || "#180607";
 
-        const skillAccent     = getCSSVar("--skill-accent")     || "#ff2d2d";
-        const skillBorder     = getCSSVar("--skill-border")     || "#4a1212";
-        const skillLine       = getCSSVar("--skill-line")       || "#df2020";
-        const skillBg         = getCSSVar("--skill-bg")         || "#180607";
+        const relAccent = getCSSVar("--relation-accent") || "#ff2d2d";
+        const relBorder = getCSSVar("--relation-border") || "#4a1212";
+        const relBg = getCSSVar("--relation-bg") || "#180607";
 
-        const histAccent      = getCSSVar("--history-accent")   || "#ff2d2d";
-        const histBorder      = getCSSVar("--history-border")   || "#4a1212";
-        const histLine        = getCSSVar("--history-line")     || "#df2020";
-        const histBg          = getCSSVar("--history-bg")       || "#180607";
+        const skillLeftLine = getCSSVar("--skill-line-left") || "#df2020";
+        const skillRightLine = getCSSVar("--skill-line-right") || "#df2020";
 
-        const favorAccent     = getCSSVar("--favor-accent")     || "#ff2d2d";
-        const favorBorder     = getCSSVar("--favor-border")     || "#4a1212";
-        const favorBg         = getCSSVar("--favor-bg")         || "#180607";
+        const histBorder = getCSSVar("--history-border") || "#4a1212";
+        const histBg = getCSSVar("--history-bg") || "#180607";
+        const histLeftLine = getCSSVar("--history-line-left") || "#df2020";
+        const histRightLine = getCSSVar("--history-line-right") || "#df2020";
 
-        const hateAccent      = getCSSVar("--hate-accent")      || "#ff2d2d";
-        const hateBorder      = getCSSVar("--hate-border")      || "#4a1212";
-        const hateBg          = getCSSVar("--hate-bg")          || "#180607";
+        const favorAccent = getCSSVar("--favor-accent") || "#ff2d2d";
+        const favorBorder = getCSSVar("--favor-border") || "#4a1212";
+        const favorBg = getCSSVar("--favor-bg") || "#180607";
 
-        // ── 텍스트 값 수집 ──
+        const hateAccent = getCSSVar("--hate-accent") || "#ff2d2d";
+        const hateBorder = getCSSVar("--hate-border") || "#4a1212";
+        const hateBg = getCSSVar("--hate-bg") || "#180607";
+
         const getValue = (id) => (document.getElementById(id) || {}).value || "";
 
-        const codenameText      = getValue("codenameInput");
-        const tagText           = getValue("tagInput");
-        const secretText        = getValue("secretTextInput") || "PRISM TOP SECRET ASSET";
-        const physicalText      = getValue("physicalInput");
-        const ageText           = getValue("ageInput");
-        const rankText          = getValue("rankInput");
-        const relTitleText      = getValue("relationTitleInput");
-        const relBodyText       = getValue("relationBodyInput");
-        const skillTitleText    = getValue("skillTitleInput");
-        const skillBodyText     = getValue("skillBodyInput");
-        const histTitleText     = getValue("historyTitleInput");
-        const histBodyText      = getValue("historyBodyInput");
-        const favorText         = getValue("favorInput");
-        const hateText          = getValue("hateInput");
+        const codenameText = getValue("codenameInput");
+        const tagText = getValue("tagInput");
+        const secretText = getValue("secretTextInput") || "PRISM TOP SECRET ASSET";
+        const physicalText = getValue("physicalInput");
+        const ageText = getValue("ageInput");
+        const rankText = getValue("rankInput");
+        const relTitleText = getValue("relationTitleInput");
+        const relBodyText = getValue("relationBodyInput");
+        const skillTitleText = getValue("skillTitleInput");
+        const skillBodyText = getValue("skillBodyInput");
+        const histTitleText = getValue("historyTitleInput");
+        const histBodyText = getValue("historyBodyInput");
+        const favorText = getValue("favorInput");
+        const hateText = getValue("hateInput");
 
-        // ── 카드 치수 (CSS px 기준) ──
-        const CARD_W   = 318;
-        const HERO_H   = 252;
-        const PAD_X    = 14;
-        const PAD_Y    = 10;
-        const INNER_W  = CARD_W - PAD_X * 2;   // 290
+        const CARD_W = 318;
+        const HERO_H = 252;
+        const PAD_X = 14;
+        const PAD_Y = 10;
+        const INNER_W = CARD_W - PAD_X * 2;
 
-        /* ---------- 1단계: 히어로 이미지 그리기 ---------- */
-        // 배경 카드 전체
         ctx.fillStyle = cardBg;
         ctx.fillRect(0, 0, W, H);
 
-        // 히어로 영역
         if (uploadedImageDataUrl) {
           await new Promise((resolve) => {
             const img = new Image();
             img.onload = () => {
-              // cover 시뮬레이션
-              const imgW = img.naturalWidth, imgH = img.naturalHeight;
-              const targetW = px(CARD_W), targetH = px(HERO_H);
+              const imgW = img.naturalWidth;
+              const imgH = img.naturalHeight;
+              const targetW = px(CARD_W);
+              const targetH = px(HERO_H);
               const scale = Math.max(targetW / imgW, targetH / imgH);
-              const dW = imgW * scale, dH = imgH * scale;
-              const dX = (targetW - dW) / 2, dY = 0;
+              const dW = imgW * scale;
+              const dH = imgH * scale;
+              const dX = (targetW - dW) / 2;
+              const dY = 0;
               ctx.drawImage(img, dX, dY, dW, dH);
               resolve();
             };
@@ -880,7 +955,6 @@
             img.src = uploadedImageDataUrl;
           });
         } else {
-          // 기본 placeholder
           ctx.fillStyle = "#111111";
           ctx.fillRect(0, 0, px(CARD_W), px(HERO_H));
           ctx.fillStyle = "#888888";
@@ -889,7 +963,6 @@
           ctx.fillText("IMAGE", px(CARD_W / 2), px(HERO_H / 2));
         }
 
-        // 히어로 그라디언트 오버레이
         const heroGrad = ctx.createLinearGradient(0, 0, 0, px(HERO_H));
         heroGrad.addColorStop(0.00, "rgba(0,0,0,0.00)");
         heroGrad.addColorStop(0.55, "rgba(0,0,0,0.08)");
@@ -898,37 +971,26 @@
         ctx.fillStyle = heroGrad;
         ctx.fillRect(0, 0, px(CARD_W), px(HERO_H));
 
-        /* ---------- 2단계: content 배경 ---------- */
-        // content 영역은 히어로 아래부터 copyright 바로 위까지
-        // 먼저 전체 높이를 계산해야 하므로 dry-run 없이 고정 값으로 처리
-        // (Canvas는 auto-height가 없으므로 텍스트 높이를 측정해 Y를 추적)
-
         ctx.textAlign = "left";
+        let curY = HERO_H + PAD_Y;
 
-        let curY = HERO_H + PAD_Y; // CSS px 단위
-
-        /* ── PRISM TOP SECRET ASSET ── */
         ctx.font = `800 ${px(10)}px "Noto Sans KR", sans-serif`;
         ctx.textAlign = "center";
         ctx.fillStyle = secretAccent;
-        ctx.letterSpacing = "2.6px";
         ctx.fillText(secretText, px(CARD_W / 2), px(curY + 10));
         curY += 20;
 
-        /* ── CODENAME ── */
         ctx.font = `300 ${px(24)}px "Noto Sans KR", sans-serif`;
         ctx.fillStyle = textWhite;
         ctx.fillText(codenameText, px(CARD_W / 2), px(curY + 24));
         curY += 32;
 
-        /* ── TAG ── */
         if (tagText) {
           ctx.font = `400 ${px(10)}px "Noto Sans KR", sans-serif`;
           const tagW = ctx.measureText(tagText).width + px(20);
           const tagX = px(CARD_W / 2) - tagW / 2;
           const tagH = px(22);
           const tagTop = px(curY);
-          // 테두리
           ctx.strokeStyle = tagBorder;
           ctx.lineWidth = px(1);
           ctx.strokeRect(tagX, tagTop, tagW, tagH);
@@ -943,47 +1005,43 @@
 
         ctx.textAlign = "left";
 
-        /* ── PHYSICAL DESCRIPTION panel ── */
-        function drawPanel(bgColor, borderColor, titleColor, titleText, bodyText, bodyTextColor, x, y, w) {
-          ctx.font = `400 ${px(11)}px "Noto Sans KR", sans-serif`;
-          // 텍스트 높이 측정 (미리 계산)
+        function drawPhysicalPanel(x, y, w, bodyText) {
           const lineH = px(11) * 1.72;
-          const lines = bodyText.split("\n");
-          let textH = 0;
-          for (const line of lines) {
-            if (!line.trim()) { textH += lineH; continue; }
-            const words = line.split(" ");
-            let cur = "";
-            for (const word of words) {
-              const test = cur ? cur + " " + word : word;
-              if (ctx.measureText(test).width > px(w - 24) && cur) {
-                textH += lineH;
-                cur = word;
-              } else cur = test;
-            }
-            textH += lineH;
-          }
-          const panelH = px(12 + 10 + 10) + px(10) + textH; // padding + title + gap + body
-          fillRoundRect(ctx, x, y, w, (panelH / SCALE), 6, bgColor, borderColor, px(1));
-          ctx.fillStyle = titleColor;
+          const bodyFont = `400 ${px(11)}px "Noto Sans KR", sans-serif`;
+          const textH = measureWrappedTextHeight(ctx, bodyText, px(w - 24), lineH, bodyFont);
+          const panelH = 12 + 10 + 8 + 8 + (textH / SCALE) + 13;
+
+          fillRoundRect(ctx, x, y, w, panelH, 6, physBg, physBorder, px(1));
+
+          ctx.fillStyle = textWhite;
           ctx.font = `800 ${px(10)}px "Noto Sans KR", sans-serif`;
-          ctx.fillText(titleText, px(x + 12), px(y + 12) + px(10));
-          const finalY = drawWrappedText(
-            ctx, bodyText,
-            px(x + 12), px(y + 12) + px(10) + px(12) + lineH * 0.8,
-            px(w - 24), lineH, bodyTextColor,
-            `400 ${px(11)}px "Noto Sans KR", sans-serif`
+          ctx.fillText("PHYSICAL DESCRIPTION", px(x + 12), px(y + 22));
+
+          const titleWidth = ctx.measureText("PHYSICAL DESCRIPTION").width;
+          const lineY = px(y + 30);
+          ctx.strokeStyle = physLine;
+          ctx.lineWidth = px(1);
+          ctx.beginPath();
+          ctx.moveTo(px(x + 12), lineY);
+          ctx.lineTo(px(x + 12) + titleWidth, lineY);
+          ctx.stroke();
+
+          drawWrappedText(
+            ctx,
+            bodyText,
+            px(x + 12),
+            px(y + 48),
+            px(w - 24),
+            lineH,
+            textBody,
+            bodyFont
           );
-          return y + panelH / SCALE + 12;
+
+          return y + panelH + 12;
         }
 
-        curY = drawPanel(
-          physBg, physBorder, physAccent,
-          "PHYSICAL DESCRIPTION", physicalText, textBody,
-          PAD_X, curY, INNER_W
-        );
+        curY = drawPhysicalPanel(PAD_X, curY, INNER_W, physicalText);
 
-        /* ── STAT GRID ── */
         const statW = (INNER_W - 10) / 2;
         const statH = 73;
 
@@ -995,103 +1053,180 @@
           ctx.fillText(label, px(x + w / 2), px(y + 22));
           ctx.font = `500 ${px(12)}px "Noto Sans KR", sans-serif`;
           ctx.fillStyle = statText;
-          ctx.fillText(value, px(x + w / 2), px(y + 22 + 20));
+          ctx.fillText(value, px(x + w / 2), px(y + 42));
           ctx.textAlign = "left";
         }
 
-        drawStat("AGE / GEN",  ageText,  PAD_X,              curY, statW, statH);
+        drawStat("AGE / GEN", ageText, PAD_X, curY, statW, statH);
         drawStat("RANK / TYPE", rankText, PAD_X + statW + 10, curY, statW, statH);
         curY += statH + 12;
 
-        /* ── RELATION ── */
-        curY = drawPanel(
-          relBg, relBorder, relAccent,
-          relTitleText || "RELATION", relBodyText, textBody,
-          PAD_X, curY, INNER_W
-        );
+        function drawRelationPanel(x, y, w, titleText, bodyText) {
+          const bodyFont = `400 ${px(11)}px "Noto Sans KR", sans-serif`;
+          const lineH = px(11) * 1.72;
+          ctx.font = bodyFont;
+          const title = titleText || "RELATION";
+          const titleFont = `800 ${px(14)}px "Noto Sans KR", sans-serif`;
+          ctx.font = titleFont;
+          const titleH = 14;
+          const textH = measureWrappedTextHeight(ctx, bodyText, px(w - 38), lineH, bodyFont);
+          const panelH = 14 + titleH + 12 + (textH / SCALE) + 14;
 
-        /* ── SKILL section head ── */
-        if (skillTitleText) {
-          ctx.strokeStyle = skillLine;
-          ctx.lineWidth = px(1);
+          const rx = px(x);
+          const ry = px(y);
+          const rw = px(w);
+          const rh = px(panelH);
+          const radius = px(12);
+
           ctx.beginPath();
-          ctx.moveTo(px(PAD_X), px(curY));
-          ctx.lineTo(px(PAD_X + INNER_W), px(curY));
+          ctx.moveTo(rx + px(4), ry);
+          ctx.lineTo(rx + rw - radius, ry);
+          ctx.quadraticCurveTo(rx + rw, ry, rx + rw, ry + radius);
+          ctx.lineTo(rx + rw, ry + rh - radius);
+          ctx.quadraticCurveTo(rx + rw, ry + rh, rx + rw - radius, ry + rh);
+          ctx.lineTo(rx + px(4), ry + rh);
+          ctx.lineTo(rx + px(4), ry);
+          ctx.closePath();
+
+          ctx.fillStyle = relBg;
+          ctx.fill();
+          ctx.strokeStyle = relBorder;
+          ctx.lineWidth = px(1);
           ctx.stroke();
-          ctx.font = `700 ${px(11)}px "Noto Sans KR", sans-serif`;
-          ctx.fillStyle = skillAccent;
-          ctx.fillText(skillTitleText, px(PAD_X), px(curY + 14));
-          curY += 26;
+
+          ctx.fillStyle = relAccent;
+          ctx.fillRect(rx, ry, px(4), rh);
+
+          ctx.fillStyle = textWhite;
+          ctx.font = titleFont;
+          ctx.fillText(title, px(x + 16), px(y + 22));
+
+          drawWrappedText(
+            ctx,
+            bodyText,
+            px(x + 16),
+            px(y + 42),
+            px(w - 32),
+            lineH,
+            textBody,
+            bodyFont
+          );
+
+          return y + panelH + 14;
         }
 
-        /* ── SKILL panel ── */
-        curY = drawPanel(
-          skillBg, skillBorder, skillAccent,
-          "", skillBodyText, textBody,
-          PAD_X, curY, INNER_W
-        );
+        curY = drawRelationPanel(PAD_X, curY, INNER_W, relTitleText, relBodyText);
 
-        /* ── HISTORY section head ── */
-        if (histTitleText) {
-          ctx.strokeStyle = histLine;
+        function drawSectionHead(x, y, w, title, leftColor, rightColor) {
+          if (!title) return y;
+          ctx.font = `700 ${px(11)}px "Noto Sans KR", sans-serif`;
+          const textW = ctx.measureText(title).width;
+          const leftW = 28;
+          const gap = 10;
+          const rightStart = x + leftW + gap + (textW / SCALE) + gap;
+          const lineY = y + 8;
+
+          ctx.strokeStyle = leftColor;
           ctx.lineWidth = px(1);
           ctx.beginPath();
-          ctx.moveTo(px(PAD_X), px(curY));
-          ctx.lineTo(px(PAD_X + INNER_W), px(curY));
+          ctx.moveTo(px(x), px(lineY));
+          ctx.lineTo(px(x + leftW), px(lineY));
           ctx.stroke();
-          ctx.font = `700 ${px(11)}px "Noto Sans KR", sans-serif`;
-          ctx.fillStyle = histAccent;
-          ctx.fillText(histTitleText, px(PAD_X), px(curY + 14));
-          curY += 26;
+
+          ctx.fillStyle = textWhite;
+          ctx.fillText(title, px(x + leftW + gap), px(y + 12));
+
+          ctx.strokeStyle = rightColor;
+          ctx.beginPath();
+          ctx.moveTo(px(rightStart), px(lineY));
+          ctx.lineTo(px(x + w), px(lineY));
+          ctx.stroke();
+
+          return y + 26;
         }
 
-        /* ── HISTORY panel ── */
-        curY = drawPanel(
-          histBg, histBorder, histAccent,
-          "", histBodyText, textBody,
-          PAD_X, curY, INNER_W
-        );
+        curY = drawSectionHead(PAD_X, curY, INNER_W, skillTitleText, skillLeftLine, skillRightLine);
 
-        /* ── FAVOR / HATE ── */
+        if (skillBodyText) {
+          const lineH = px(11) * 1.72;
+          curY = drawWrappedText(
+            ctx,
+            skillBodyText,
+            px(PAD_X),
+            px(curY + 2),
+            px(INNER_W),
+            lineH,
+            textBody,
+            `400 ${px(11)}px "Noto Sans KR", sans-serif`
+          ) / SCALE + 12;
+        }
+
+        curY = drawSectionHead(PAD_X, curY + 4, INNER_W, histTitleText, histLeftLine, histRightLine);
+
+        function drawHistoryPanel(x, y, w, bodyText) {
+          const lineH = px(11) * 1.72;
+          const bodyFont = `400 ${px(11)}px "Noto Sans KR", sans-serif`;
+          const textH = measureWrappedTextHeight(ctx, bodyText, px(w - 24), lineH, bodyFont);
+          const panelH = 12 + (textH / SCALE) + 13;
+
+          fillRoundRect(ctx, x, y, w, panelH, 6, histBg, histBorder, px(1));
+
+          drawWrappedText(
+            ctx,
+            bodyText,
+            px(x + 12),
+            px(y + 20),
+            px(w - 24),
+            lineH,
+            textBody,
+            bodyFont
+          );
+
+          return y + panelH + 12;
+        }
+
+        curY = drawHistoryPanel(PAD_X, curY, INNER_W, histBodyText);
+
         const miniW = (INNER_W - 10) / 2;
 
         function drawMini(label, text, accentColor, borderColor, bgColor, x, y, w) {
           ctx.font = `400 ${px(11)}px "Noto Sans KR", sans-serif`;
           const lineH = px(11) * 1.68;
-          const lines = text.split("\n");
-          let textH = 0;
-          for (const line of lines) {
-            if (!line.trim()) { textH += lineH; continue; }
-            const words = line.split(" ");
-            let cur = "";
-            for (const word of words) {
-              const test = cur ? cur + " " + word : word;
-              if (ctx.measureText(test).width > px(w - 22) && cur) { textH += lineH; cur = word; }
-              else cur = test;
-            }
-            textH += lineH;
-          }
+          const textH = measureWrappedTextHeight(
+            ctx,
+            text,
+            px(w - 22),
+            lineH,
+            `400 ${px(11)}px "Noto Sans KR", sans-serif`
+          );
           const panelH = Math.max(82, 11 + 10 + 10 + textH / SCALE + 12);
+
           fillRoundRect(ctx, x, y, w, panelH, 6, bgColor, borderColor, px(1));
+
           ctx.font = `800 ${px(10)}px "Noto Sans KR", sans-serif`;
           ctx.fillStyle = accentColor;
           ctx.fillText(label, px(x + 11), px(y + 21));
+
           drawWrappedText(
-            ctx, text,
-            px(x + 11), px(y + 21) + px(13),
-            px(w - 22), lineH, textSoft,
+            ctx,
+            text,
+            px(x + 11),
+            px(y + 34),
+            px(w - 22),
+            lineH,
+            textSoft,
             `400 ${px(11)}px "Noto Sans KR", sans-serif`
           );
+
           return y + panelH + 10;
         }
 
         const miniEndY = Math.max(
           drawMini("FAVOR", favorText, favorAccent, favorBorder, favorBg, PAD_X, curY, miniW),
-          drawMini("HATE",  hateText,  hateAccent,  hateBorder,  hateBg,  PAD_X + miniW + 10, curY, miniW)
+          drawMini("HATE", hateText, hateAccent, hateBorder, hateBg, PAD_X + miniW + 10, curY, miniW)
         );
         curY = miniEndY;
 
-        /* ── COPYRIGHT ── */
         ctx.fillStyle = cardBg;
         ctx.fillRect(0, px(curY), px(CARD_W), px(30));
         ctx.font = `700 ${px(9)}px "Noto Sans KR", sans-serif`;
@@ -1099,15 +1234,13 @@
         ctx.textAlign = "center";
         ctx.fillText("© PRISM FOUNDATION", px(CARD_W / 2), px(curY + 17));
 
-        /* ---------- 캔버스 사이즈를 실제 높이로 재조정 ---------- */
         const finalHeight = px(curY + 30);
         const finalCanvas = document.createElement("canvas");
-        finalCanvas.width  = W;
+        finalCanvas.width = W;
         finalCanvas.height = finalHeight;
         const fc = finalCanvas.getContext("2d");
         fc.drawImage(canvas, 0, 0);
 
-        /* ---------- 저장 ---------- */
         const dataUrl = finalCanvas.toDataURL("image/png");
         const link = document.createElement("a");
         link.href = dataUrl;
@@ -1119,8 +1252,7 @@
         status.textContent = "PNG 저장이 완료되었습니다.";
       } catch (err) {
         console.error("PNG save error:", err);
-        document.getElementById("actionStatus").textContent =
-          "오류: " + err.message;
+        document.getElementById("actionStatus").textContent = "오류: " + err.message;
       }
     });
   </script>
