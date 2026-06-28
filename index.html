@@ -25,16 +25,16 @@
       --physical-line: #ff2d2d;
       --relation-left-line: #ff2d2d;
       --relation-title: #fff7f7;
-      --relation-bg: transparent; /* 초기값 투명 */
+      --relation-bg: transparent;
       --skill-line-left: #df2020;
       --skill-line-right: #df2020;
       --history-line-left: #df2020;
       --history-line-right: #df2020;
       --stat-accent: #ff2d2d;
       --favor-accent: #ff2d2d;
-      --favor-bg: transparent; /* 초기값 투명 */
+      --favor-bg: transparent;
       --hate-accent: #ff2d2d;
-      --hate-bg: transparent; /* 초기값 투명 */
+      --hate-bg: transparent;
     }
 
     html, body {
@@ -223,7 +223,6 @@
       border-radius: 10px;
       overflow: hidden;
       box-shadow: 0 0 40px rgba(0,0,0,0.6);
-      /* html2canvas가 border-radius 바깥으로 요소를 삐져나가게 그리는 오류 방지 */
       isolation: isolate; 
     }
 
@@ -233,10 +232,9 @@
       width: 100%;
       height: 424px;
       overflow: hidden;
-      background: #111111;
+      background: #000000;
       border-top-left-radius: 9px;
       border-top-right-radius: 9px;
-      /* 내부 레이어 독립을 시켜 삐져나오는 버그 차단 */
       isolation: isolate; 
     }
 
@@ -261,20 +259,25 @@
 
     .hero-gradient {
       position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
+      top: 0; left: 0; right: 0; 
+      bottom: -2px; /* 하단 틈새 차단을 위해 약간 더 길게 설정 */
       background: linear-gradient(
         to bottom,
         rgba(0,0,0,0.00) 0%,
         rgba(0,0,0,0.05) 50%,
         rgba(10,1,2,0.75) 82%,
-        rgba(13,2,2,1.00) 100%
+        rgba(0,0,0,1.00) 100%
       );
       pointer-events: none;
+      z-index: 2;
     }
 
     .content {
+      position: relative;
       background: var(--card-bg);
       padding: 10px 14px 14px;
+      margin-top: -1px; /* 서브픽셀 틈새 차단을 위해 이미지 영역과 1px 겹침 처리 */
+      z-index: 3;
     }
 
     .secret {
@@ -921,6 +924,12 @@
           scale: 2,
           backgroundColor: "#000000",
           useCORS: true,
+          logging: false,
+          scale: 2,
+          scrollX: 0,
+          scrollY: 0,
+          windowWidth: document.documentElement.offsetWidth,
+          windowHeight: document.documentElement.offsetHeight
         });
 
         const dataUrl = canvas.toDataURL("image/png");
