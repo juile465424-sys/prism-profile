@@ -6,9 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PRISM Profile Maker</title>
 
-  <link rel="preconnect" href="[fonts.googleapis.com](https://fonts.googleapis.com)">
-  <link rel="preconnect" href="[fonts.gstatic.com](https://fonts.gstatic.com)" crossorigin>
-  <link href="[fonts.googleapis.com](https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;800&display=swap)" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;800&display=swap)" rel="stylesheet">
 
   <style>
     * { box-sizing: border-box; }
@@ -255,7 +255,7 @@
           rgba(10,1,2,0.75) 82%,
           rgba(13,2,2,1.00) 100%
         ),
-        url("data:image/svg+xml;utf8,<svg xmlns='[w3.org](http://www.w3.org/2000/svg)' width='318' height='424' viewBox='0 0 318 424'><rect width='318' height='424' fill='%23111111'/><text x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23888888' font-size='22' font-family='Arial'>3 : 4</text></svg>")
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='318' height='424' viewBox='0 0 318 424'><rect width='318' height='424' fill='%23111111'/><text x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23888888' font-size='22' font-family='Arial'>3 : 4</text></svg>")
         center top / cover no-repeat;
     }
 
@@ -322,7 +322,7 @@
       font-size: 11px;
       line-height: 1.72;
       font-weight: 400;
-      word-break: keep-all;
+      word-break: break-all; /* 공백 없는 긴 문장 강제 줄바꿈 처리 추가 */
       white-space: pre-line;
     }
 
@@ -476,7 +476,7 @@
       color: var(--card-text-soft);
       font-size: 11px;
       line-height: 1.68;
-      word-break: keep-all;
+      word-break: break-all; /* 공백 없는 긴 문장 강제 줄바꿈 처리 추가 */
       white-space: pre-line;
     }
 
@@ -1004,33 +1004,45 @@
           if (stroke) { ctx.strokeStyle=stroke; ctx.lineWidth=lw||px(1); ctx.stroke(); }
         }
 
+        // 공백이 없어도 글자 단위로 나누어 캔버스 폭에 맞춰 정확한 높이를 구하도록 함수 전면 수정
         function measureTextH(ctx, text, maxW, lineH, font) {
           ctx.font = font;
           let h = 0;
           for (const line of text.split("\n")) {
-            if (!line.trim()) { h += lineH; continue; }
+            if (!line) { h += lineH; continue; }
             let cur = "";
-            for (const word of line.split(" ")) {
-              const test = cur ? cur + " " + word : word;
-              if (ctx.measureText(test).width > maxW && cur) { h += lineH; cur = word; }
-              else cur = test;
+            for (let i = 0; i < line.length; i++) {
+              const char = line[i];
+              const test = cur + char;
+              if (ctx.measureText(test).width > maxW && cur) {
+                h += lineH;
+                cur = char;
+              } else {
+                cur = test;
+              }
             }
-            h += lineH;
+            if (cur) h += lineH;
           }
           return h;
         }
 
+        // 공백 여부 무관하게 가로 한계를 넘으면 글자 단위로 끊어 캔버스에 줄바꿈 출력하도록 수정
         function drawText(ctx, text, x, y, maxW, lineH, color, font) {
           ctx.fillStyle = color; ctx.font = font;
           let cy = y;
           for (const line of text.split("\n")) {
-            if (!line.trim()) { cy += lineH; continue; }
+            if (!line) { cy += lineH; continue; }
             let cur = "";
-            for (const word of line.split(" ")) {
-              const test = cur ? cur + " " + word : word;
+            for (let i = 0; i < line.length; i++) {
+              const char = line[i];
+              const test = cur + char;
               if (ctx.measureText(test).width > maxW && cur) {
-                ctx.fillText(cur, x, cy); cy += lineH; cur = word;
-              } else cur = test;
+                ctx.fillText(cur, x, cy); 
+                cy += lineH; 
+                cur = char;
+              } else {
+                cur = test;
+              }
             }
             if (cur) { ctx.fillText(cur, x, cy); cy += lineH; }
           }
