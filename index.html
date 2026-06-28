@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
@@ -26,13 +25,16 @@
       --physical-line: #ff2d2d;
       --relation-left-line: #ff2d2d;
       --relation-title: #fff7f7;
+      --relation-bg: transparent; /* 초기값 투명 */
       --skill-line-left: #df2020;
       --skill-line-right: #df2020;
       --history-line-left: #df2020;
       --history-line-right: #df2020;
       --stat-accent: #ff2d2d;
       --favor-accent: #ff2d2d;
+      --favor-bg: transparent; /* 초기값 투명 */
       --hate-accent: #ff2d2d;
+      --hate-bg: transparent; /* 초기값 투명 */
     }
 
     html, body {
@@ -221,6 +223,8 @@
       border-radius: 10px;
       overflow: hidden;
       box-shadow: 0 0 40px rgba(0,0,0,0.6);
+      /* html2canvas가 border-radius 바깥으로 요소를 삐져나가게 그리는 오류 방지 */
+      isolation: isolate; 
     }
 
     /* 3:4 비율 이미지 영역 */
@@ -230,6 +234,10 @@
       height: 424px;
       overflow: hidden;
       background: #111111;
+      border-top-left-radius: 9px;
+      border-top-right-radius: 9px;
+      /* 내부 레이어 독립을 시켜 삐져나오는 버그 차단 */
+      isolation: isolate; 
     }
 
     .hero-placeholder {
@@ -326,7 +334,7 @@
       font-size: 11px;
       line-height: 1.72;
       font-weight: 400;
-      word-break: break-all; /* 미리보기 영역도 공백없는 문자열 자동 줄바꿈 지원 */
+      word-break: break-all;
       white-space: pre-line;
     }
 
@@ -349,6 +357,7 @@
       border-radius: 0 4px 4px 0;
       padding: 14px 16px 14px 22px;
       box-shadow: none;
+      background: var(--relation-bg);
     }
 
     .panel-relation .panel-title {
@@ -477,12 +486,13 @@
       color: var(--card-text-soft);
       font-size: 11px;
       line-height: 1.68;
-      word-break: break-all; /* FAVOR / HATE 영역도 자동 줄바꿈 처리 */
+      word-break: break-all;
       white-space: pre-line;
     }
 
     .mini-favor {
       border: 1px solid var(--box-border);
+      background: var(--favor-bg);
     }
 
     .mini-favor .mini-title { color: var(--favor-accent); }
@@ -490,6 +500,7 @@
 
     .mini-hate {
       border: 1px solid var(--box-border);
+      background: var(--hate-bg);
     }
 
     .mini-hate .mini-title { color: var(--hate-accent); }
@@ -525,7 +536,6 @@
       .editor { padding: 14px; }
     }
   </style>
-
 </head>
 <body>
   <header class="site-header">
@@ -540,237 +550,252 @@
       <h2>프로필 편집기</h2>
       <p class="editor-desc">코드네임, 각 박스 내용, 색상을 설정할 수 있습니다.</p>
 
-  <div class="action-row">
-    <button type="button" class="action-button" id="savePngButton">PNG 저장</button>
-    <div class="action-status" id="actionStatus"></div>
-  </div>
-
-  <div class="form-section">
-    <h3 class="form-section-title">색상 설정</h3>
-
-    <div class="field">
-      <label for="secretColorInput">상단 문구 색상</label>
-      <input type="color" id="secretColorInput" value="#ff2d2d" />
-    </div>
-
-    <div class="field">
-      <label for="boxBorderColorInput">섹션 박스 테두리 색상</label>
-      <input type="color" id="boxBorderColorInput" value="#333333" />
-    </div>
-
-    <div class="field">
-      <label for="tagColorInput">태그 색상</label>
-      <input type="color" id="tagColorInput" value="#ff2d2d" />
-    </div>
-
-    <div class="field">
-      <label for="textColorInput">본문 글자 색상</label>
-      <input type="color" id="textColorInput" value="#f0dddd" />
-    </div>
-  </div>
-
-  <div class="form-section">
-    <h3 class="form-section-title">기본 정보</h3>
-
-    <div class="field">
-      <label for="imageInput">상단 이미지 업로드 (3:4 권장)</label>
-      <input type="file" id="imageInput" accept="image/*" />
-    </div>
-
-    <div class="field">
-      <label for="secretTextInput">상단 문구</label>
-      <input type="text" id="secretTextInput" value="PRISM TOP SECRET ASSET" />
-    </div>
-
-    <div class="field">
-      <label for="codenameInput">코드네임</label>
-      <input type="text" id="codenameInput" value="" />
-    </div>
-
-    <div class="field">
-      <label for="tagInput">태그</label>
-      <input type="text" id="tagInput" value="" />
-    </div>
-  </div>
-
-  <div class="form-section">
-    <h3 class="form-section-title">외형 / 스탯</h3>
-
-    <div class="field">
-      <label for="physicalInput">PHYSICAL DESCRIPTION</label>
-      <textarea id="physicalInput"></textarea>
-      <div class="inline-color">
-        <label for="physicalColorInput">언더라인 색상</label>
-        <input type="color" id="physicalColorInput" value="#ff2d2d" />
+      <div class="action-row">
+        <button type="button" class="action-button" id="savePngButton">PNG 저장</button>
+        <div class="action-status" id="actionStatus"></div>
       </div>
-    </div>
 
-    <div class="field">
-      <label for="ageInput">AGE / GEN</label>
-      <input type="text" id="ageInput" value="" />
-    </div>
+      <div class="form-section">
+        <h3 class="form-section-title">색상 설정</h3>
 
-    <div class="field">
-      <label for="rankInput">RANK / TYPE</label>
-      <input type="text" id="rankInput" value="" />
-      <div class="inline-color">
-        <label for="statColorInput">텍스트 색상</label>
-        <input type="color" id="statColorInput" value="#ff2d2d" />
-      </div>
-    </div>
-  </div>
-
-  <div class="form-section">
-    <h3 class="form-section-title">관계 / 능력 / 서사</h3>
-
-    <div class="field">
-      <label for="relationTitleInput">관계 섹션 제목</label>
-      <input type="text" id="relationTitleInput" value="" />
-    </div>
-
-    <div class="field">
-      <label for="relationBodyInput">관계 섹션 본문</label>
-      <textarea id="relationBodyInput"></textarea>
-      <div class="color-row">
-        <div class="color-cell">
-          <label for="relationTextColorInput">텍스트 색상</label>
-          <input type="color" id="relationTextColorInput" value="#fff7f7" />
+        <div class="field">
+          <label for="secretColorInput">상단 문구 색상</label>
+          <input type="color" id="secretColorInput" value="#ff2d2d" />
         </div>
-        <div class="color-cell">
-          <label for="relationLeftLineInput">왼쪽 강조선 색상</label>
-          <input type="color" id="relationLeftLineInput" value="#ff2d2d" />
+
+        <div class="field">
+          <label for="boxBorderColorInput">섹션 박스 테두리 색상</label>
+          <input type="color" id="boxBorderColorInput" value="#333333" />
+        </div>
+
+        <div class="field">
+          <label for="tagColorInput">태그 색상</label>
+          <input type="color" id="tagColorInput" value="#ff2d2d" />
+        </div>
+
+        <div class="field">
+          <label for="textColorInput">본문 글자 색상</label>
+          <input type="color" id="textColorInput" value="#f0dddd" />
         </div>
       </div>
-    </div>
 
-    <div class="field">
-      <label for="skillTitleInput">능력 섹션 제목</label>
-      <input type="text" id="skillTitleInput" value="" />
-      <div class="color-row">
-        <div class="color-cell">
-          <label for="skillLeftLineColorInput">왼쪽 선</label>
-          <input type="color" id="skillLeftLineColorInput" value="#df2020" />
-        </div>
-        <div class="color-cell">
-          <label for="skillRightLineColorInput">오른쪽 선</label>
-          <input type="color" id="skillRightLineColorInput" value="#df2020" />
-        </div>
-      </div>
-    </div>
+      <div class="form-section">
+        <h3 class="form-section-title">기본 정보</h3>
 
-    <div class="field">
-      <label for="skillBodyInput">능력 섹션 본문</label>
-      <textarea id="skillBodyInput"></textarea>
-    </div>
-
-    <div class="field">
-      <label for="historyTitleInput">서사 섹션 제목</label>
-      <input type="text" id="historyTitleInput" value="" />
-      <div class="color-row">
-        <div class="color-cell">
-          <label for="historyLeftLineColorInput">왼쪽 선</label>
-          <input type="color" id="historyLeftLineColorInput" value="#df2020" />
+        <div class="field">
+          <label for="imageInput">상단 이미지 업로드 (3:4 권장)</label>
+          <input type="file" id="imageInput" accept="image/*" />
         </div>
-        <div class="color-cell">
-          <label for="historyRightLineColorInput">오른쪽 선</label>
-          <input type="color" id="historyRightLineColorInput" value="#df2020" />
+
+        <div class="field">
+          <label for="secretTextInput">상단 문구</label>
+          <input type="text" id="secretTextInput" value="PRISM TOP SECRET ASSET" />
+        </div>
+
+        <div class="field">
+          <label for="codenameInput">코드네임</label>
+          <input type="text" id="codenameInput" value="" />
+        </div>
+
+        <div class="field">
+          <label for="tagInput">태그</label>
+          <input type="text" id="tagInput" value="" />
         </div>
       </div>
-    </div>
 
-    <div class="field">
-      <label for="historyBodyInput">서사 본문</label>
-      <textarea id="historyBodyInput"></textarea>
-    </div>
-  </div>
+      <div class="form-section">
+        <h3 class="form-section-title">외형 / 스탯</h3>
 
-  <div class="form-section">
-    <h3 class="form-section-title">기호</h3>
-
-    <div class="field">
-      <label for="favorInput">FAVOR</label>
-      <textarea id="favorInput"></textarea>
-      <div class="inline-color">
-        <label for="favorColorInput">텍스트 색상</label>
-        <input type="color" id="favorColorInput" value="#ff2d2d" />
-      </div>
-    </div>
-
-    <div class="field">
-      <label for="hateInput">HATE</label>
-      <textarea id="hateInput"></textarea>
-      <div class="inline-color">
-        <label for="hateColorInput">텍스트 색상</label>
-        <input type="color" id="hateColorInput" value="#ff2d2d" />
-      </div>
-    </div>
-  </div>
-
-  <p class="helper">이미지는 3:4 비율(예: 750×1000px)로 준비하면 가장 잘 맞습니다.</p>
-</section>
-
-<section class="preview-area">
-  <div class="wrap">
-    <div class="card" id="profileCard">
-      <div class="hero" id="previewHero">
-        <span class="hero-placeholder" id="previewHeroPlaceholder">3 : 4</span>
-        <img class="hero-img" id="previewHeroImg" alt="" />
-        <div class="hero-gradient"></div>
-      </div>
-
-      <div class="content">
-        <div class="secret" id="previewSecret">PRISM TOP SECRET ASSET</div>
-        <h1 class="codename" id="previewCodename"></h1>
-        <div class="tag" id="previewTag"></div>
-
-        <section class="panel panel-physical">
-          <div class="panel-title">PHYSICAL DESCRIPTION</div>
-          <p id="previewPhysical"></p>
-        </section>
-
-        <div class="stat-grid">
-          <div class="stat">
-            <div class="stat-label">AGE / GEN</div>
-            <div class="stat-value" id="previewAge"></div>
-          </div>
-          <div class="stat">
-            <div class="stat-label">RANK / TYPE</div>
-            <div class="stat-value" id="previewRank"></div>
+        <div class="field">
+          <label for="physicalInput">PHYSICAL DESCRIPTION</label>
+          <textarea id="physicalInput"></textarea>
+          <div class="inline-color">
+            <label for="physicalColorInput">언더라인 색상</label>
+            <input type="color" id="physicalColorInput" value="#ff2d2d" />
           </div>
         </div>
 
-        <section class="panel panel-relation">
-          <div class="panel-title" id="previewRelationTitle"></div>
-          <p id="previewRelationBody"></p>
-        </section>
+        <div class="field">
+          <label for="ageInput">AGE / GEN</label>
+          <input type="text" id="ageInput" value="" />
+        </div>
 
-        <div class="section-head section-head-skill" id="previewSkillTitle"></div>
-        <section class="panel panel-skill">
-          <p id="previewSkillBody"></p>
-        </section>
-
-        <div class="section-head section-head-history" id="previewHistoryTitle"></div>
-        <section class="panel panel-history">
-          <p id="previewHistoryBody"></p>
-        </section>
-
-        <div class="bottom-grid">
-          <section class="mini mini-favor">
-            <div class="mini-title">FAVOR</div>
-            <p id="previewFavor"></p>
-          </section>
-          <section class="mini mini-hate">
-            <div class="mini-title">HATE</div>
-            <p id="previewHate"></p>
-          </section>
+        <div class="field">
+          <label for="rankInput">RANK / TYPE</label>
+          <input type="text" id="rankInput" value="" />
+          <div class="inline-color">
+            <label for="statColorInput">텍스트 색상</label>
+            <input type="color" id="statColorInput" value="#ff2d2d" />
+          </div>
         </div>
       </div>
 
-      <div class="copyright">© PRISM FOUNDATION</div>
-    </div>
-  </div>
-</section>
+      <div class="form-section">
+        <h3 class="form-section-title">관계 / 능력 / 서사</h3>
 
+        <div class="field">
+          <label for="relationTitleInput">관계 섹션 제목</label>
+          <input type="text" id="relationTitleInput" value="" />
+        </div>
+
+        <div class="field">
+          <label for="relationBodyInput">관계 섹션 본문</label>
+          <textarea id="relationBodyInput"></textarea>
+          <div class="color-row">
+            <div class="color-cell">
+              <label for="relationTextColorInput">텍스트 색상</label>
+              <input type="color" id="relationTextColorInput" value="#fff7f7" />
+            </div>
+            <div class="color-cell">
+              <label for="relationLeftLineInput">왼쪽 강조선 색상</label>
+              <input type="color" id="relationLeftLineInput" value="#ff2d2d" />
+            </div>
+          </div>
+          <div class="inline-color" style="margin-top: 8px;">
+            <label for="relationBgColorInput">관계 섹션 박스 배경색</label>
+            <input type="color" id="relationBgColorInput" value="#000000" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="skillTitleInput">능력 섹션 제목</label>
+          <input type="text" id="skillTitleInput" value="" />
+          <div class="color-row">
+            <div class="color-cell">
+              <label for="skillLeftLineColorInput">왼쪽 선</label>
+              <input type="color" id="skillLeftLineColorInput" value="#df2020" />
+            </div>
+            <div class="color-cell">
+              <label for="skillRightLineColorInput">오른쪽 선</label>
+              <input type="color" id="skillRightLineColorInput" value="#df2020" />
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="skillBodyInput">능력 섹션 본문</label>
+          <textarea id="skillBodyInput"></textarea>
+        </div>
+
+        <div class="field">
+          <label for="historyTitleInput">서사 섹션 제목</label>
+          <input type="text" id="historyTitleInput" value="" />
+          <div class="color-row">
+            <div class="color-cell">
+              <label for="historyLeftLineColorInput">왼쪽 선</label>
+              <input type="color" id="historyLeftLineColorInput" value="#df2020" />
+            </div>
+            <div class="color-cell">
+              <label for="historyRightLineColorInput">오른쪽 선</label>
+              <input type="color" id="historyRightLineColorInput" value="#df2020" />
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="historyBodyInput">서사 본문</label>
+          <textarea id="historyBodyInput"></textarea>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3 class="form-section-title">기호</h3>
+
+        <div class="field">
+          <label for="favorInput">FAVOR</label>
+          <textarea id="favorInput"></textarea>
+          <div class="color-row">
+            <div class="color-cell">
+              <label for="favorColorInput">텍스트 색상</label>
+              <input type="color" id="favorColorInput" value="#ff2d2d" />
+            </div>
+            <div class="color-cell">
+              <label for="favorBgColorInput">박스 배경색</label>
+              <input type="color" id="favorBgColorInput" value="#000000" />
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="hateInput">HATE</label>
+          <textarea id="hateInput"></textarea>
+          <div class="color-row">
+            <div class="color-cell">
+              <label for="hateColorInput">텍스트 색상</label>
+              <input type="color" id="hateColorInput" value="#ff2d2d" />
+            </div>
+            <div class="color-cell">
+              <label for="hateBgColorInput">박스 배경색</label>
+              <input type="color" id="hateBgColorInput" value="#000000" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="helper">이미지는 3:4 비율(예: 750×1000px)로 준비하면 가장 잘 맞습니다.</p>
+    </section>
+
+    <section class="preview-area">
+      <div class="wrap">
+        <div class="card" id="profileCard">
+          <div class="hero" id="previewHero">
+            <span class="hero-placeholder" id="previewHeroPlaceholder">3 : 4</span>
+            <img class="hero-img" id="previewHeroImg" alt="" />
+            <div class="hero-gradient"></div>
+          </div>
+
+          <div class="content">
+            <div class="secret" id="previewSecret">PRISM TOP SECRET ASSET</div>
+            <h1 class="codename" id="previewCodename"></h1>
+            <div class="tag" id="previewTag"></div>
+
+            <section class="panel panel-physical">
+              <div class="panel-title">PHYSICAL DESCRIPTION</div>
+              <p id="previewPhysical"></p>
+            </section>
+
+            <div class="stat-grid">
+              <div class="stat">
+                <div class="stat-label">AGE / GEN</div>
+                <div class="stat-value" id="previewAge"></div>
+              </div>
+              <div class="stat">
+                <div class="stat-label">RANK / TYPE</div>
+                <div class="stat-value" id="previewRank"></div>
+              </div>
+            </div>
+
+            <section class="panel panel-relation">
+              <div class="panel-title" id="previewRelationTitle"></div>
+              <p id="previewRelationBody"></p>
+            </section>
+
+            <div class="section-head section-head-skill" id="previewSkillTitle"></div>
+            <section class="panel panel-skill">
+              <p id="previewSkillBody"></p>
+            </section>
+
+            <div class="section-head section-head-history" id="previewHistoryTitle"></div>
+            <section class="panel panel-history">
+              <p id="previewHistoryBody"></p>
+            </section>
+
+            <div class="bottom-grid">
+              <section class="mini mini-favor">
+                <div class="mini-title">FAVOR</div>
+                <p id="previewFavor"></p>
+              </section>
+              <section class="mini mini-hate">
+                <div class="mini-title">HATE</div>
+                <p id="previewHate"></p>
+              </section>
+            </div>
+          </div>
+
+          <div class="copyright">© PRISM FOUNDATION</div>
+        </div>
+      </div>
+    </section>
   </main>
 
   <script>
@@ -800,12 +825,9 @@
 
     let uploadedImageDataUrl = null;
 
-    // 미리보기와 PNG 저장 결과가 항상 똑같이 나오도록,
-    // 업로드한 사진을 히어로 박스 비율(380:424)에 맞춰 직접 잘라낸 뒤 그 결과만 사용합니다.
-    // (CSS object-fit에만 맡기면 캡처 엔진이 다르게 잘라내는 문제가 있어 이 방식으로 고정합니다.)
     const HERO_BOX_W = 380;
     const HERO_BOX_H = 424;
-    const HERO_CROP_SCALE = 2; // 저장 시 선명도를 위해 2배 해상도로 잘라둡니다.
+    const HERO_CROP_SCALE = 2;
 
     function cropImageToHeroBox(dataUrl) {
       return new Promise((resolve, reject) => {
@@ -816,8 +838,8 @@
           const scale = Math.max(targetW / img.naturalWidth, targetH / img.naturalHeight);
           const dW = img.naturalWidth * scale;
           const dH = img.naturalHeight * scale;
-          const dX = (targetW - dW) / 2; // 가로는 중앙 정렬
-          const dY = 0;                  // 세로는 상단 기준 정렬 (object-position: center top과 동일)
+          const dX = (targetW - dW) / 2;
+          const dY = 0;                  
           const canvas = document.createElement("canvas");
           canvas.width = targetW;
           canvas.height = targetH;
@@ -866,25 +888,20 @@
     bindColor("secretColorInput", ["--secret-accent"]);
     bindColor("boxBorderColorInput", ["--box-border"]);
     bindColor("tagColorInput",    ["--tag-accent"]);
-
     bindColor("physicalColorInput", ["--physical-line"]);
-
     bindColor("statColorInput", ["--stat-accent"]);
-
     bindColor("relationTextColorInput", ["--relation-title"]);
     bindColor("relationLeftLineInput", ["--relation-left-line"]);
-
+    bindColor("relationBgColorInput", ["--relation-bg"]);
     bindColor("skillLeftLineColorInput",  ["--skill-line-left"]);
     bindColor("skillRightLineColorInput", ["--skill-line-right"]);
-
     bindColor("historyLeftLineColorInput",  ["--history-line-left"]);
     bindColor("historyRightLineColorInput", ["--history-line-right"]);
-
     bindColor("favorColorInput", ["--favor-accent"]);
+    bindColor("favorBgColorInput", ["--favor-bg"]);
     bindColor("hateColorInput",  ["--hate-accent"]);
+    bindColor("hateBgColorInput", ["--hate-bg"]);
 
-    // PNG로 저장할 때 실제 화면에 보이는 카드(DOM)를 그대로 캡처합니다.
-    // 이렇게 하면 입력한 글자의 위치/크기/줄바꿈이 미리보기와 100% 동일하게 저장됩니다.
     document.getElementById("savePngButton").addEventListener("click", async () => {
       const status = document.getElementById("actionStatus");
       const card = document.getElementById("profileCard");
@@ -921,6 +938,5 @@
       }
     });
   </script>
-
 </body>
 </html>
